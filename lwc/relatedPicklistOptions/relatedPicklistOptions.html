@@ -1,0 +1,17 @@
+<template>
+
+    <c-lookup icon-name="standard:account" s-object-api-name="Account" label={accountFieldLabel}
+        onlookupupdate={lookupRecord} placeholder={accountPlaceHolder} required=true>
+    </c-lookup>
+
+    <lightning-combobox dropdown-alignment="auto" name="RelatedLocations" label="Location of Provider"
+        placeholder="Select Location.." value={locationId} options={relatedLocationOptions}
+        onchange={handleLocationsChange}>
+    </lightning-combobox>
+
+    <c-lookup icon-name="standard:contact" s-object-api-name="Contact" label={contactFieldLabel}
+        onlookupupdate={lookupRecord} placeholder={contactPlaceHolder} accountrecordid={accountId} required=true>
+    </c-lookup>
+
+
+</template>

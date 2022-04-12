@@ -1,0 +1,60 @@
+<template>
+    <lightning-card title="Link this Order to a Visit (optional)">
+        <div class="slds-p-around_small">
+            <lightning-input type="search" onchange={handleKeyChange} class="slds-p-top_x-small slds-m-bottom_small"
+                label="Select Account/Location" value={queryTerm}></lightning-input>
+        </div>
+        <div if:true={isLoading} class="slds-is-relative">
+            <lightning-spinner variant="brand" alternative-text="Loading" size="large"> </lightning-spinner>
+        </div>
+
+        <div class="slds-p-around_small">
+            <template if:true={data} for:each={data} for:item="rec">
+                <div key={rec.Id} class="slds-border_bottom slds-p-top_x-small slds-p-bottom_x-small">
+                    <ul class="slds-has-block-links">
+                        <li class="slds-item slds-list_horizontal">
+                            <lightning-input id={rec.Id} variant="label-hidden" key={rec.Id} data-value={rec.Id}
+                                type="radio" name="radio" checked={rec.checked} value={rec}
+                                onchange={handleRadioChange}>
+                            </lightning-input>
+                            <label class="slds-radio__label" for={rec.Id}>
+                                <strong><a data-ref={rec.Id}>{rec.ContactName} <lightning-badge
+                                            label={rec.VisitTypeName}></lightning-badge></a></strong>
+                            </label>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Account: {rec.AccountName}</span>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Location: {rec.LocationName}</span>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Status: {rec.Status}</span>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Planned Start Time: {rec.VisitStartDate}
+                                <span if:true={rec.VisitStartTime}>
+                                    , {rec.VisitStartTime}
+                                </span>
+                            </span>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Planned End Time: {rec.VisitEndDate}</span>
+                            <span if:true={rec.VisitEndTIme}>
+                                , {rec.VisitEndTIme}
+                            </span>
+                        </li>
+                        <li class="slds-item">
+                            <span class="slds-p-left_large">Priority: {rec.VisitPriority}</span>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+            <template if:true={loadMoreButton}>
+                <lightning-button class="slds-align_absolute-center slds-p-top_small" variant="Neutral"
+                    label="Load More" title="Load More" onclick={loadMore}>
+                </lightning-button>
+            </template>
+        </div>
+    </lightning-card>
+</template>

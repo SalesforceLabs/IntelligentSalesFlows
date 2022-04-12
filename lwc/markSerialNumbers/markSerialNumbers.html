@@ -1,0 +1,14 @@
+<template>
+    <lightning-card>
+        <h1 slot="title">
+            <Strong>{title}</Strong>
+        </h1>
+        <p class="slds-p-horizontal_small">
+            There are {selectedSerialNumbers} Serial Numbers untracked from your Trunk. Which do you think from these
+            are lost?
+            <lightning-checkbox-group required if:true={options} name="Serial Numbers" label="Serial Numbers"
+                options={options} value={selectedValues} onchange={handleChange}></lightning-checkbox-group>
+        </p>
+    </lightning-card>
+
+</template>

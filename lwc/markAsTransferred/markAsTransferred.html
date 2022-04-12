@@ -1,0 +1,29 @@
+<template>
+    <Strong>Select a Transfer Request</Strong><br><br>
+    <ul class="list">
+    <template for:each={oppList} for:item="opp">
+             <li key={opp.Id} class=" slds-p-horizontal_small  slds-p-vertical_small">
+              <dl>
+                  <lightning-layout>
+                      <lightning-layout-item><lightning-input key={opp.Id} data-value={opp.Id} type="radio"  name="radio" value={opp} onchange={handleRadioChange}></lightning-input></lightning-layout-item>
+                      <lightning-layout-item><strong>{opp.Product2Id}</strong>     
+                      </lightning-layout-item>
+                  </lightning-layout>
+                    <div style="padding-left: 32px;">
+                    <dt class="md-colon">
+                        SerialNumber : &nbsp;
+                    </dt>
+                    <dd>{opp.SerialNumber}</dd>  
+                </div>
+                <div style="padding-left: 32px;">
+                    <dt class="md-colon">
+                        Status : &nbsp;
+                    </dt>
+                    <dd>{opp.Status}</dd>  
+                </div>
+              </dl>
+          </li>
+           </template><br>
+           <lightning-button class="slds-align_absolute-center" label="Load More.." onclick={handleLoadMore}></lightning-button>
+     </ul>
+  </template>

@@ -1,0 +1,6 @@
+<design:component>
+    <design:attribute name="ProductId" label="ProductId"/>
+    <design:attribute name="VisitId" label="VisitId"/>
+    <design:attribute name="ScannedSerialNumbers" label="ScannedSerialNumbers"/>
+    <design:attribute name="LocationId" label="LocationId"/>
+</design:component>

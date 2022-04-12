@@ -1,0 +1,89 @@
+<template>
+    <lightning-card>
+        <template for:each={rows} for:item="row" for:index="index">
+            <div key={row.Id} class="slds-border_bottom slds-p-around_small">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" class="slds-p-bottom_xx-small">
+                        <strong>Serial Number: {row.Serial_Number__c}</strong>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" class="slds-p-bottom_xx-small">
+                        <c-gen-custom-lookup object-api-name="ProductFulfillmentLocation" field-api-name="LocationId"
+                            onselected={handleSelected} field-label="Location of Lost" value={row.locationValue}
+                            label="Location_Of_Lost__c" index={index} key={row.Serialized_Product__c}>
+                        </c-gen-custom-lookup>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" class="slds-p-bottom_x-small">
+                        <lightning-input type="date" class="dateField" key={row.Serialized_Product__c} name="input4" data-id='Date_of_Lost__c' data-target-id={index} data-label="date" data-index={index}
+                            value={row.dateValue} label="Date of Lost" placeholder="Select Date"
+                            onchange={handleChange}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" class="slds-p-bottom_xx-small">
+                        <c-gen-custom-lookup object-api-name="User" field-api-name="User_Search__c"
+                            onselected={handleSelected} field-label="Who do you think is Responsible?" label='User_Responsible_for_Loss__c'
+                            index={index} key={row.Serialized_Product__c} value={row.ContactValue}>
+                        </c-gen-custom-lookup>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </lightning-card>
+    <template if:true={showPopupApp}>
+        <!-- Modal/Popup Box LWC starts here slds-text-body_small slds-m-left_small -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h3 id="modal-heading-03" class="slds-modal__title slds-hyphenate slds-modal-p-around_small">
+                        {popUpHeader}</h3>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_small" id="modal-content-id-12">
+                    <div class="mob-spread">
+                        <div>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <div class='ban'>
+                                        <strong style='font-size: medium;'>{popupBodyHeaderAssign}</strong><br>
+                                        <p style="margin-left: 10px;padding-bottom: 5px;">{popupBodyAssign}</p>
+                                        <!--<strong style='font-size: medium;'>{label.bannerMsgHeader}</strong> <br>-->
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}
+                        title={popupButtonLabel}>{popupButtonLabel}</button>
+                    <button class="slds-button slds-button_brand" onclick={handleUpdate} title="Confirm">
+                        {saveButtonLabel}</button>
+                    
+
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <lightning-card>
+        <div slot="footer">
+            <div class="slds-clearfix">
+                <div class="slds-float_right">
+                    <lightning-button variant="Neutral" label="Back" title="Previous" onclick={handlePrevious}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+                    <lightning-button variant="brand" label="Done" title="Next" onclick={handleNext}
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>
