@@ -2,22 +2,24 @@ import { api, LightningElement, track } from 'lwc';
 import { FlowNavigationBackEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 
 export default class MarkForLost extends LightningElement {
-    @api selectedSerialNumbers;
+    @api selectedSerialNumbersIds;
     @api SerializedProducts;
     @track showPopupApp;
     @api popupBodyHeaderAssign;
     @api popupBodyAssign
     @api popUpHeader
-    @api saveButtonLabel = 'Confirm';
-    @api popupButtonLabel = 'Cancel';
+    @api saveButtonLabel = 'Yes';
+    @api popupButtonLabel = 'No';
     @api availableActions = [];
     rows = [];
     @api lostSerializedProducts = [];
-    
+    @api ProductName;
+    @api LocationId;
+
     connectedCallback() {
         console.log('rows', this.rows);
-        if (this.selectedSerialNumbers) {
-            let SerializedProductsIds = this.selectedSerialNumbers.split(';').map(item => item.trim());
+        if (this.selectedSerialNumbersIds) {
+            let SerializedProductsIds = this.selectedSerialNumbersIds;//.split(';').map(item => item.trim());
             const results = this.SerializedProducts.filter(row => SerializedProductsIds.includes(row.Id));
             for (let i = 0; i <= results.length; i++) {
                 if (results[i]) {
@@ -36,38 +38,37 @@ export default class MarkForLost extends LightningElement {
     }
 
     handleNext() {
-        this.showPopupApp = true;
+        if (this.isInputValid() && this.LocationId) {
+            this.showPopupApp = true;
+        }
     }
 
     handleUpdate() {
         this.showPopupApp = false;
-        console.log(this.rows);
         this.lostSerializedProducts = this.rows;
-        if(this.isInputValid()){
-            if (this.availableActions.find((action) => action === 'NEXT')) {
-                // navigate to the next screen
-                const navigateFinishEvent = new FlowNavigationNextEvent();
-                this.dispatchEvent(navigateFinishEvent);
-            }
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigateFinishEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateFinishEvent);
         }
     }
 
     handleChange(event) {
         let date = event.target.value;
         let todaysDate = new Date();
-            let id = event.target.dataset.id;
-            let index = event.target.dataset.index;
-            this.rows[index][id] = event.target.value;
-        
+        let id = event.target.dataset.id;
+        let index = event.target.dataset.index;
+        this.rows[index][id] = event.target.value;
+
         let enteredValue = this.template.querySelector("[data-target-id='" + index + "']");
 
         if (new Date(date).getTime() > todaysDate.getTime()) {
-            enteredValue.setCustomValidity('The Date must be less than or Equal to today date');
+            enteredValue.setCustomValidity('Select a date that’s on or before today.');
         } else {
             enteredValue.setCustomValidity('');
         }
         enteredValue.reportValidity();
-    
+
     }
 
     handleSelected(event) {
@@ -83,7 +84,6 @@ export default class MarkForLost extends LightningElement {
             const navigateBackEvent = new FlowNavigationBackEvent();
             this.dispatchEvent(navigateBackEvent);
         }
-
     }
 
     closeModal() {
@@ -94,11 +94,18 @@ export default class MarkForLost extends LightningElement {
         let isValid = true;
         let inputFields = this.template.querySelectorAll('.dateField');
         inputFields.forEach(inputField => {
-            if(!inputField.checkValidity()) {
+            if (!inputField.checkValidity()) {
                 inputField.reportValidity();
                 isValid = false;
             }
         });
         return isValid;
+    }
+
+    lookupRecord(event) {
+        const target = event.detail;
+        this.rows[target?.index][target?.name] = target?.selectedRecord?.Id;
+        console.log('test', this.rows);
+
     }
 }

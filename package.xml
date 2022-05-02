@@ -9,11 +9,56 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Case.From_Date__c</members>
+        <members>Case.Location__c</members>
+        <members>Case.Quantity__c</members>
+        <members>Case.Requested_Date__c</members>
+        <members>Case.Status</members>
+        <members>Case.To_Date__c</members>
+        <members>Case.Type</members>
+        <members>Date_of_Lost__c</members>
+        <members>Generic_Case_KPI__c.ActualBooleanValue__c</members>
+        <members>Generic_Case_KPI__c.ActualDateTimeValue__c</members>
+        <members>Generic_Case_KPI__c.ActualDecimalValue__c</members>
+        <members>Generic_Case_KPI__c.ActualIntegerValue__c</members>
+        <members>Generic_Case_KPI__c.ActualStringValue__c</members>
+        <members>Generic_Case_KPI__c.Assessment_Indicator_Definition__c</members>
+        <members>Generic_Case_KPI__c.Case__c</members>
+        <members>Generic_Case_KPI__c.ExpectedBooleanValue__c</members>
+        <members>Generic_Case_KPI__c.ExpectedDateTimeValue__c</members>
+        <members>Generic_Case_KPI__c.ExpectedDecimalValue__c</members>
+        <members>Generic_Case_KPI__c.ExpectedIntegerValue__c</members>
+        <members>Generic_Case_KPI__c.ExpectedStringValue__c</members>
+        <members>Generic_Case_KPI__c.Product__c</members>
+        <members>Generic_Case_KPI__c.SerialNumber__c</members>
+        <members>Generic_Case_KPI__c.Type__c</members>
+        <members>GnrcVstKeyPerformanceInd.SerialNumber__c</members>
+        <members>Location_Of_Lost__c</members>
+        <members>Opportunity.CaseId__c</members>
+        <members>Order.CaseId__c</members>
+        <members>Order.Type</members>
+        <members>Reason_for_Loss__c</members>
+        <members>Serial_Number__c</members>
+        <members>SerializedProduct.Return_Date__c</members>
+        <members>Serialized_Product__c</members>
+        <members>User_Responsible_for_Loss__c</members>
         <name>CustomField</name>
     </types>
     <types>
-        <members>*</members>
+        <members>ESignatureCanvasHeader</members>
+        <members>ESignatureClear</members>
+        <members>ESignatureDefaultHeader</members>
+        <members>ESignatureDisclaimer</members>
+        <members>EsignatureCancel</members>
+        <members>EsinatureDone</members>
+        <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>Case</members>
+        <members>Generic_Case_KPI__c</members>
+        <members>Lost_Serialized_Product__c</members>
+        <members>Opportunity</members>
+        <members>Order</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -22,7 +67,18 @@
     </types>
     <types>
         <members>*</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Case.Status</members>
+        <members>Case.Type</members>
+        <members>Order.Status</members>
+        <members>Order.Type</members>
+        <name>StandardValueSet</name>
     </types>
     <version>54.0</version>
 </Package>

@@ -1,0 +1,17 @@
+dt, dd{
+    display: inline-block;
+    margin:0;
+}
+dt{
+    width:40%;
+    word-wrap: break-word;
+    color: #444444;
+}
+dd{
+    width:60%;
+    word-wrap: break-word;
+    color: #24385E;
+}
+.borer-bottom {
+    border-bottom: 2px solid blue;
+}

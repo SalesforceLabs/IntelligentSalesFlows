@@ -11,6 +11,9 @@
             <property name="popupHeader" label="Popup Header Message" type="String" role="inputOnly"/>
             <property name="popupMessage" label="Popup Body Message" type="String" role="inputOnly"/>
             <property name="contactName" label="Contact Name" type="String" role="inputOnly"/>
+            <property name="isBackButtonEnabled" label="is Back Button Enabled" type="Boolean" role="inputOnly"/>
+            <property name="deviceTypeName" label="Device Type Name" type="String" role="inputOnly"/>
+            <property name="isterminateflow" label="Is Teminate flow ?" type="Boolean" role="outputOnly" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="loanReturnsTitleheaderName" label="Loan Returns Header Name" type="String" role="inputOnly"/>
+            <property name="trialReturnsTitleHeaderName" label="Trial Returns Header Name" type="String" role="inputOnly"/>
+            <property name="caseType" label="Case Type" type="String" role="inputOnly"/>
+            <property name="title" label="Title" type="String" role="inputOnly"/>
+            <property name="newFlowInvoke" label="New Flow Name" type="String" role="inputOnly"/>
+            <property name="returnFlowInvoke" label="Handover Flow Name" type="String" role="inputOnly"/>
+            <property name="listviewQuantity" label="List Views Quantity Name" type="String" role="inputOnly"/>
+            <property name="listviewDuration" label="List Views Duration Name" type="String" role="inputOnly"/>
+            <property name="showReturnListViews" label="Show Returns List Views" type="Boolean" role="inputOnly"/>          
+            <property name="viewReturnListButtons" label="Show Returns List Buttons" type="Boolean" role="inputOnly"/>            
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

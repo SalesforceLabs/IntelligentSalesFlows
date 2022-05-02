@@ -22,6 +22,9 @@ export default class ESignature extends LightningElement {
     @api popupMessage;
     @api flowNametoInvoke;
     @api contactName;
+    @api isBackButtonEnabled = false;
+    @api deviceTypeName;
+    @api isterminateflow = false;
     @track signatureonPopup = true;
     @track showPopupApp;
 
@@ -77,6 +80,15 @@ export default class ESignature extends LightningElement {
             this.drawSignature(event.clientX - rect.left, event.clientY - rect.top);
         }
     }
+    handleCancel(){
+        this.isterminateflow = true;
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+        }
+    }
+
     handleMouseUp() {
         this.drawingEnabled = false;
         // Don't enable the button on tapping into the input box. (signatureData will be null until a user draws something)

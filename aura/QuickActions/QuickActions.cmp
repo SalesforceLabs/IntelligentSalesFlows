@@ -2,7 +2,9 @@
     <aura:attribute name="ProductId" type="String" default="" />
     <aura:attribute name="VisitId" type="String" default="" />
     <aura:attribute name="LocationId" type="String" default="" />
-    <aura:attribute name="ScannedSerialNumbers" type="String[]" default="[]"/>
+    <aura:attribute name="ScannedSerialNumbers" type="String[]" />
+    <aura:attribute name="flowName" type="String"/>
+    
     <aura:attribute name="flowLaunched" type="Boolean" default="true" />
     
     <aura:if isTrue="{!v.flowLaunched}">

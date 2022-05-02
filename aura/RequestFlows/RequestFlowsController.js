@@ -9,7 +9,7 @@
         if(flowDetails && flowDetails.caseId){
             inputVariables = [
                 {
-                    name : 'caseId',
+                    name : 'CaseId',
                     type : 'String',
                     value : flowDetails.caseId
                 }

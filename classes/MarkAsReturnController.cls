@@ -1,10 +1,11 @@
-public class MarkAsReturnController {
+public with sharing class MarkAsReturnController {
     @InvocableMethod(label='Update Product Return' description='Updates ProductItem location and Product Return.' category='SerializedProduct')
     public static List<Response> getRecordsForProductReturn(List<Requests> rqstInputs){
         try{
             //input varaibles from flow
             string prodcutId = rqstInputs[0]?.prodcutId;
             string locationId = rqstInputs[0]?.locationId;
+            Date returnDate = rqstInputs[0]?.returnDate;
             List<string> serialNumbers = rqstInputs[0]?.serialNumbers;
             
             Map<String,String> prdtItemMap = new Map<String,String>();
@@ -15,9 +16,10 @@ public class MarkAsReturnController {
                 }
             }
             
-            for(SerializedProduct sp: [SELECT Id, ProductItemId, Product2Id, Status   FROM SerializedProduct WHERE Product2Id =: prodcutId  AND SerialNumber IN: serialNumbers]){
+            for(SerializedProduct sp: [SELECT Id, ProductItemId, Product2Id, Status, SerialNumber   FROM SerializedProduct WHERE Status='Sent' AND Product2Id =: prodcutId  AND SerialNumber IN: serialNumbers]){
                 If(prdtItemMap.containsKey(sp.Product2Id) && String.isBlank(sp.ProductItemId)){
                     sp.ProductItemId = prdtItemMap.get(sp.Product2Id);
+                    sp.Return_Date__c = returnDate;
                     sp.Status = 'Available';
                     serilizedproductsList.add(sp);
                 }

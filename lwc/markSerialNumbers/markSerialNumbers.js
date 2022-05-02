@@ -1,18 +1,22 @@
 import { LightningElement, api } from 'lwc';
+import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 
 export default class markSerialNumbers extends LightningElement {
+    @api availableActions = [];
     @api SerializedProducts;
-    @api value;
+    @api selectedSerialNumberIds;
     @api title;
+    @api terminate;
+    @api selectedSerialNumbers = [];
     selectedValues = [];
 
-    get selectedSerialNumbers() {
-        return (this.selectedValues && this.selectedValues.length) || 0;
+    get serialNumbersCount() {
+        return (this.options && this.options.length) || 0;
     }
 
     connectedCallback() {
-        if (this.value) {
-            this.selectedValues = this.value.split(';');
+        if (this.selectedSerialNumberIds) {
+            this.selectedValues = this.selectedSerialNumberIds//this.value.split(';');
         }
     }
 
@@ -29,16 +33,36 @@ export default class markSerialNumbers extends LightningElement {
 
     handleChange(e) {
         this.selectedValues = e.detail.value;
-        this.value = e.detail.value.join(';');
+        this.selectedSerialNumberIds = e.detail.value;
+        this.selectedSerialNumbers = this.SerializedProducts.filter(e => this.selectedValues.includes(e.Id)).map(e => e.SerialNumber);
     }
 
     @api
     validate() {
-        if (!this.value) {
+        if (!this.selectedSerialNumberIds && !this.terminate) {
             return {
                 isValid: false,
-                errorMessage: 'Please select a choice.'
+                errorMessage: 'Select atleast one product.'
             };
         }
     }
+
+    handleNext() {
+        this.terminate = false;
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigatenNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigatenNextEvent);
+        }
+    }
+
+    handleCancel() {
+        this.terminate = true;
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigatenNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigatenNextEvent);
+        }
+    }
+
 }

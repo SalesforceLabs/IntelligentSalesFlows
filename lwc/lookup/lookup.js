@@ -12,6 +12,9 @@ export default class Lookup extends LightningElement {
     @api sObjectApiName = '';
     @api defaultRecordId = '';
     @api required;
+    @api recordId;
+    @api recordName;
+    @api accountRecordId = '';
     // private properties 
     lstResult = []; // to store list of returned records   
     hasRecords = true;
@@ -20,23 +23,27 @@ export default class Lookup extends LightningElement {
     delayTimeout;
     selectedRecord = {}; // to store selected lookup record in object formate 
     // initial function to populate default selected lookup record if defaultRecordId provided  
-    connectedCallback() {
-        if (this.defaultRecordId != '') {
-            fetchDefaultRecord({ recordId: this.defaultRecordId, 'sObjectApiName': this.sObjectApiName })
-                .then((result) => {
-                    if (result != null) {
-                        this.selectedRecord = result;
-                        this.handelSelectRecordHelper(); // helper function to show/hide lookup result container on UI
-                    }
-                })
-                .catch((error) => {
-                    this.error = error;
-                    this.selectedRecord = {};
-                });
+    @api index;
+    @api name;
+
+
+    @wire(fetchDefaultRecord, { recordId: '$defaultRecordId', sObjectApiName: '$sObjectApiName' })
+    wireDefaultRecord(value) {
+        const { data, error } = value; // destructure the provisioned value
+        this.isSearchLoading = false;
+        if (data) {
+            this.selectedRecord = data;
+            this.lookupUpdatehandler(this.selectedRecord);
+            this.handelSelectRecordHelper();
         }
-    }
+        else if (error) {
+            this.error = error;
+            this.selectedRecord = {};
+        }
+    };
+
     // wire function property to fetch search record based on user input
-    @wire(fetchLookupData, { searchKey: '$searchKey', sObjectApiName: '$sObjectApiName' })
+    @wire(fetchLookupData, { searchKey: '$searchKey', sObjectApiName: '$sObjectApiName', accountId: '$accountRecordId' })
     searchResult(value) {
         const { data, error } = value; // destructure the provisioned value
         this.isSearchLoading = false;
@@ -52,6 +59,8 @@ export default class Lookup extends LightningElement {
 
     // update searchKey property on input field change  
     handleKeyChange(event) {
+        const lookupInputContainer = this.template.querySelector('.lookupInputContainer');
+        lookupInputContainer.removeAttribute('required');
         // Debouncing this method: Do not update the reactive property as long as this function is
         // being called within a delay of DELAY. This is to avoid a very large number of Apex method calls.
         this.isSearchLoading = true;
@@ -62,10 +71,13 @@ export default class Lookup extends LightningElement {
                 this.searchKey = searchKey;
         }, DELAY);
     }
+
     // method to toggle lookup result section on UI 
     toggleResult(event) {
+        //event.currentTarget.reportValidity();
         const lookupInputContainer = this.template.querySelector('.lookupInputContainer');
         const clsList = lookupInputContainer.classList;
+        lookupInputContainer.removeAttribute('required');
         const whichEvent = event.target.getAttribute('data-source');
         switch (whichEvent) {
             case 'searchInputField':
@@ -76,11 +88,12 @@ export default class Lookup extends LightningElement {
                 break;
         }
     }
+
     // method to clear selected lookup record  
-    handleRemove() {
+    @api handleRemove() {
         this.searchKey = '';
         this.selectedRecord = {};
-        this.lookupUpdatehandler(undefined); // update value on parent component as well from helper function 
+        this.lookupUpdatehandler(null); // update value on parent component as well from helper function 
 
         // remove selected pill and display input field again 
         const searchBoxWrapper = this.template.querySelector('.searchBoxWrapper');
@@ -94,6 +107,8 @@ export default class Lookup extends LightningElement {
     handelSelectedRecord(event) {
         var objId = event.target.getAttribute('data-recid'); // get selected record Id 
         this.selectedRecord = this.lstResult.find(data => data.Id === objId); // find selected record from list 
+        this.recordId = this.selectedRecord.Id;
+        this.recordName = this.selectedRecord.Name;
         this.lookupUpdatehandler(this.selectedRecord); // update value on parent component as well from helper function 
         this.handelSelectRecordHelper(); // helper function to show/hide lookup result container on UI
     }
@@ -111,7 +126,12 @@ export default class Lookup extends LightningElement {
     lookupUpdatehandler(value) {
         const oEvent = new CustomEvent('lookupupdate',
             {
-                'detail': { selectedRecord: value, sObjectApiName: this.sObjectApiName }
+                'detail': {
+                    selectedRecord: value,
+                    sObjectApiName: this.sObjectApiName,
+                    index: this.index,
+                    name: this.name
+                }
             }
         );
         this.dispatchEvent(oEvent);

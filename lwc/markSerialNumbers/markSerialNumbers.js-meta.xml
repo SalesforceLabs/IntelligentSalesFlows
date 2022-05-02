@@ -8,8 +8,10 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="SerializedProducts" label="Collection Group" type="@salesforce/schema/SerializedProduct[]" role="inputOnly"/>
-            <property name="value" label="Selected Serial Numbers" type="String" />
+            <property name="selectedSerialNumberIds" label="Selected Serial Numbers Ids" type="String[]" />
+            <property name="selectedSerialNumbers" label="Selected Serial Numbers" type="String[]"/>
             <property name="title" label="Title" type="String" role="inputOnly"/>
+            <property name="terminate" label="Terminate" type="boolean" role="outputOnly"/>
       </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

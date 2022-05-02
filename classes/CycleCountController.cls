@@ -4,9 +4,13 @@ public class CycleCountController {
         try{
             if(rqstInputs == null) return new List<Response>();
             
-            string ProductId = rqstInputs[0]?.ProductId;
-            string LocationId = rqstInputs[0]?.LocationId;
-            List<string> ScannedSerialNumbers = new List<string>();//rqstInputs[0]?.ScannedSerialNumbers;
+            string productId = rqstInputs[0]?.ProductId;
+            string locationId = rqstInputs[0]?.LocationId;
+            List<string> scannedSerialNumbers = new List<string>();
+            
+            if(rqstInputs[0]?.ScannedSerialNumbers != null)
+                ScannedSerialNumbers.addAll(rqstInputs[0]?.ScannedSerialNumbers);
+            
             return new List<Response>{ 
                 new Response([SELECT 
                               Id,
@@ -19,9 +23,10 @@ public class CycleCountController {
                               WHERE 
                               Status IN ('Available')
                               AND Product2Id =: ProductId
-                              AND ProductItem.Product2Id =: ProductId
-                              AND ProductItem.LocationId =: LocationId
-                              AND SerialNumber NOT IN: ScannedSerialNumbers
+                              AND ProductItem.Product2Id =: productId
+                              AND ProductItem.LocationId =: locationId
+                              AND SerialNumber NOT IN: scannedSerialNumbers
+                              Order By SerialNumber ASC
                              ])};
                                  
                                  }catch(Exception e){

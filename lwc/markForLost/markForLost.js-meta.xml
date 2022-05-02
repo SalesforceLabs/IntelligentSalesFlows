@@ -7,7 +7,9 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="selectedSerialNumbers" label="Selected Serial Number" type="String" role="inputOnly"/>
+            <property name="ProductName" label="Product Name" type="String" role="inputOnly"/>
+            <property name="LocationId" label="Location Id" type="String" role="inputOnly"/>
+            <property name="selectedSerialNumbersIds" label="Selected Serial Number Ids" type="String[]" role="inputOnly"/>
             <property name="SerializedProducts" type="@salesforce/schema/SerializedProduct[]" label="Serialized Products"/>    
             <property name="popUpHeader" label="PopUp Header Name " type="String" role="inputOnly"/>
             <property name="popupBodyAssign" label="Body Message " type="String" role="inputOnly"/>

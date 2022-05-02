@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Get_Serial_Numbers</name>
         <label>Get Serial Numbers</label>
-        <locationX>1326</locationX>
+        <locationX>1194</locationX>
         <locationY>158</locationY>
         <actionName>CycleCountController</actionName>
         <actionType>apex</actionType>
@@ -11,7 +11,6 @@
             <targetReference>Display_Serial_Numbers</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -41,15 +40,14 @@
     <actionCalls>
         <name>Get_Serialized_Products</name>
         <label>Get Serialized Products</label>
-        <locationX>578</locationX>
-        <locationY>1694</locationY>
+        <locationX>314</locationX>
+        <locationY>2186</locationY>
         <actionName>HandOverController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Update_Serialized_Products</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -79,18 +77,198 @@
         </inputParameters>
         <outputParameters>
             <assignToReference>SerializedProducts</assignToReference>
-            <name>serializedProducts</name>
+            <name>SerializedProducts</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Show_Toast</name>
+        <label>Show Toast</label>
+        <locationX>314</locationX>
+        <locationY>2426</locationY>
+        <actionName>c:ShowToast</actionName>
+        <actionType>component</actionType>
+        <faultConnector>
+            <targetReference>Error_Message</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>message</name>
+            <value>
+                <stringValue>The selected Serial Numbers will be updated to status Consumed</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+            <value>
+                <stringValue>success</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>Assgin_OrderItem_To_List</name>
+        <label>Assgin OrderItem To List</label>
+        <locationX>402</locationX>
+        <locationY>1490</locationY>
+        <assignmentItems>
+            <assignToReference>ListOrderItem</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>OrderProduct</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Asset</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Asset</name>
+        <label>Assign Asset</label>
+        <locationX>402</locationX>
+        <locationY>1610</locationY>
+        <assignmentItems>
+            <assignToReference>Asset.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.Product2Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ProductId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Purchased</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.Uuid</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>VisitId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.SerialNumber</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Iterative_over_Selected_Serial_Numbers</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Asset.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>{!Get_PriceBookEntry.Product2.Name}_{!Iterative_over_Selected_Serial_Numbers}</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Asset_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Asset_to_List</name>
+        <label>Assign Asset to List</label>
+        <locationX>402</locationX>
+        <locationY>1730</locationY>
+        <assignmentItems>
+            <assignToReference>ListAsset</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Asset</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterative_over_Selected_Serial_Numbers</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_OrderItem</name>
+        <label>Assign OrderItem</label>
+        <locationX>402</locationX>
+        <locationY>1370</locationY>
+        <assignmentItems>
+            <assignToReference>OrderProduct.OrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>OrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OrderProduct.Product2Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ProductId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OrderProduct.PricebookEntryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_PriceBookEntry.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OrderProduct.UnitPrice</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_PriceBookEntry.UnitPrice</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OrderProduct.Quantity</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assgin_OrderItem_To_List</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Continue_Terminate</name>
+        <label>Continue/Terminate</label>
+        <locationX>1194</locationX>
+        <locationY>398</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Continue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>TerminateFlow</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Order_Details</targetReference>
+            </connector>
+            <label>Continue</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Create_New_Order</name>
         <label>Create New Order?</label>
-        <locationX>1326</locationX>
-        <locationY>638</locationY>
+        <locationX>314</locationX>
+        <locationY>878</locationY>
         <defaultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Visit_Selected</targetReference>
+            <targetReference>Iterative_over_Selected_Serial_Numbers</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Existing Order</defaultConnectorLabel>
         <rules>
@@ -109,33 +287,22 @@
             <label>Create New Order</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Visit_Selected</name>
-        <label>Visit Selected</label>
-        <locationX>578</locationX>
-        <locationY>878</locationY>
-        <defaultConnector>
-            <targetReference>Screen_Properties</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Is_Visit_Selected</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>isVisitSelected</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Authorization_Form</targetReference>
-            </connector>
-            <label>Is Visit Selected</label>
-        </rules>
-    </decisions>
     <interviewLabel>Mark Product for Order {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Mark Product for Order</label>
+    <loops>
+        <name>Iterative_over_Selected_Serial_Numbers</name>
+        <label>Iterative over Selected Serial Numbers</label>
+        <locationX>314</locationX>
+        <locationY>1250</locationY>
+        <collectionReference>SelectedSerialNumbers</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_OrderItem</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_OrderItems</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -156,96 +323,28 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Create_Authorization_Form</name>
-        <label>Create Authorization Form</label>
-        <locationX>50</locationX>
-        <locationY>998</locationY>
-        <assignRecordIdToReference>AuthorizationFormId</assignRecordIdToReference>
+        <name>Create_Assets</name>
+        <label>Create Assets</label>
+        <locationX>314</locationX>
+        <locationY>2066</locationY>
         <connector>
-            <targetReference>Create_Authorization_Form_Text</targetReference>
+            <targetReference>Get_Serialized_Products</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <stringValue>Mark Product for Order</stringValue>
-            </value>
-        </inputAssignments>
-        <object>AuthorizationForm</object>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Authorization_Form_Consent</name>
-        <label>Create Authorization Form Consent</label>
-        <locationX>50</locationX>
-        <locationY>1238</locationY>
-        <assignRecordIdToReference>AuthorizationFormConsentId</assignRecordIdToReference>
-        <connector>
-            <targetReference>Capture_Signature</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Message</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>AuthorizationFormTextId</field>
-            <value>
-                <elementReference>AuthorizationFormTextId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ConsentGiverId</field>
-            <value>
-                <elementReference>AccountId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <stringValue>Mark Product for Order</stringValue>
-            </value>
-        </inputAssignments>
-        <object>AuthorizationFormConsent</object>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Authorization_Form_Text</name>
-        <label>Create Authorization Form Text</label>
-        <locationX>50</locationX>
-        <locationY>1118</locationY>
-        <assignRecordIdToReference>AuthorizationFormTextId</assignRecordIdToReference>
-        <connector>
-            <targetReference>Create_Authorization_Form_Consent</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Message</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>AuthorizationFormId</field>
-            <value>
-                <elementReference>AuthorizationFormId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <stringValue>Mark Product for Order</stringValue>
-            </value>
-        </inputAssignments>
-        <object>AuthorizationFormText</object>
+        <inputReference>ListAsset</inputReference>
     </recordCreates>
     <recordCreates>
         <name>Create_Order</name>
         <label>Create Order</label>
-        <locationX>578</locationX>
-        <locationY>758</locationY>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
+        <assignRecordIdToReference>OrderId</assignRecordIdToReference>
         <connector>
-            <targetReference>Visit_Selected</targetReference>
+            <targetReference>Iterative_over_Selected_Serial_Numbers</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -258,6 +357,12 @@
             <field>EffectiveDate</field>
             <value>
                 <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Pricebook2Id</field>
+            <value>
+                <elementReference>PriceBookId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -279,73 +384,88 @@
             </value>
         </inputAssignments>
         <object>Order</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Create_OrderItems</name>
+        <label>Create OrderItems</label>
+        <locationX>314</locationX>
+        <locationY>1946</locationY>
+        <connector>
+            <targetReference>Create_Assets</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Message</targetReference>
+        </faultConnector>
+        <inputReference>ListOrderItem</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_PriceBookEntry</name>
+        <label>Get PriceBookEntry</label>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_New_Order</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Product2Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ProductId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Pricebook2Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PriceBookId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>PricebookEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Serialized_Products</name>
         <label>Update Serialized Products</label>
-        <locationX>578</locationX>
-        <locationY>1814</locationY>
+        <locationX>314</locationX>
+        <locationY>2306</locationY>
+        <connector>
+            <targetReference>Show_Toast</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
         <inputReference>SerializedProducts</inputReference>
     </recordUpdates>
     <screens>
-        <name>Capture_Signature</name>
-        <label>Capture Signature</label>
-        <locationX>50</locationX>
-        <locationY>1358</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Screen_Properties</targetReference>
-        </connector>
-        <fields>
-            <name>Signature</name>
-            <extensionName>c:eSignature</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>authFormId</name>
-                <value>
-                    <elementReference>AuthorizationFormConsentId</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>popupHeader</name>
-                <value>
-                    <stringValue>Complete Action</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>popupMessage</name>
-                <value>
-                    <stringValue>Are you sure you want to Mark these as Ordered? Marking the selected S.NOs as Ordered will also update your Inventory details </stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Display_Serial_Numbers</name>
         <label>Display Serial Numbers</label>
-        <locationX>1326</locationX>
+        <locationX>1194</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Order_Details</targetReference>
+            <targetReference>Continue_Terminate</targetReference>
         </connector>
         <fields>
             <name>markSerialNumbers</name>
             <extensionName>c:markSerialNumbers</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>title</name>
+                <value>
+                    <stringValue>Mark Product for Order</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedSerialNumberIds</name>
+                <value>
+                    <elementReference>SelectedSerialNumberIds</elementReference>
+                </value>
+            </inputParameters>
             <inputParameters>
                 <name>SerializedProducts</name>
                 <value>
@@ -353,32 +473,34 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>value</name>
+                <name>selectedSerialNumbers</name>
                 <value>
-                    <elementReference>SelectedSerialNumberIds</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>title</name>
-                <value>
-                    <stringValue>Select Serial Numbers to Mark for Order</stringValue>
+                    <elementReference>SelectedSerialNumbers</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
+                <assignToReference>SelectedSerialNumbers</assignToReference>
+                <name>selectedSerialNumbers</name>
+            </outputParameters>
+            <outputParameters>
                 <assignToReference>SelectedSerialNumberIds</assignToReference>
-                <name>value</name>
+                <name>selectedSerialNumberIds</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>TerminateFlow</assignToReference>
+                <name>terminate</name>
             </outputParameters>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Error_Message</name>
         <label>Error Message</label>
-        <locationX>1282</locationX>
-        <locationY>1934</locationY>
+        <locationX>1018</locationX>
+        <locationY>2426</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -393,8 +515,8 @@
     <screens>
         <name>Order_Details</name>
         <label>Order Details</label>
-        <locationX>1326</locationX>
-        <locationY>398</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -430,9 +552,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>value</name>
+                <name>orderValue</name>
                 <value>
                     <elementReference>OrderType</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>priceBookId</name>
+                <value>
+                    <elementReference>PriceBookId</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -455,42 +583,30 @@
             </outputParameters>
             <outputParameters>
                 <assignToReference>OrderType</assignToReference>
-                <name>value</name>
+                <name>orderValue</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>PriceBookId</assignToReference>
+                <name>priceBookId</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>ContactName</assignToReference>
+                <name>contactName</name>
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Screen_Properties</name>
-        <label>Screen Properties</label>
-        <locationX>578</locationX>
-        <locationY>1574</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Serialized_Products</targetReference>
-        </connector>
-        <fields>
-            <name>visitListViews</name>
-            <fieldText>&lt;p&gt;{!isVisitSelected}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>VisitDetails</name>
         <label>Visit Details</label>
-        <locationX>1326</locationX>
-        <locationY>518</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
-        <backButtonLabel>Back</backButtonLabel>
         <connector>
-            <targetReference>Create_New_Order</targetReference>
+            <targetReference>Get_PriceBookEntry</targetReference>
         </connector>
         <fields>
             <name>markForOrderVisit</name>
@@ -503,15 +619,27 @@
                 </value>
             </inputParameters>
             <inputParameters>
+                <name>visitId</name>
+                <value>
+                    <elementReference>isVisitSelected</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
                 <name>value</name>
                 <value>
                     <elementReference>OrderType</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>visitId</name>
+                <name>popupHeader</name>
                 <value>
-                    <elementReference>isVisitSelected</elementReference>
+                    <stringValue>Confirm Order</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>popupMessage</name>
+                <value>
+                    <stringValue>Are you sure you want to update order for the selected S.NO?</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -521,23 +649,31 @@
                 <name>visitId</name>
             </outputParameters>
         </fields>
-        <showFooter>true</showFooter>
+        <showFooter>false</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>1200</locationX>
+        <locationX>1068</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Serial_Numbers</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>AccountId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Asset</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Asset</objectType>
     </variables>
     <variables>
         <name>AuthorizationFormConsentId</name>
@@ -568,11 +704,34 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>ContactName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>isVisitSelected</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ListAsset</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Asset</objectType>
+    </variables>
+    <variables>
+        <name>ListOrderItem</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OrderItem</objectType>
     </variables>
     <variables>
         <name>LocationId</name>
@@ -589,8 +748,23 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>OrderProduct</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OrderItem</objectType>
+    </variables>
+    <variables>
         <description>New Order Or Existing Order</description>
         <name>OrderType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>PriceBookId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -613,7 +787,14 @@
     <variables>
         <name>SelectedSerialNumberIds</name>
         <dataType>String</dataType>
-        <isCollection>false</isCollection>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedSerialNumbers</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
@@ -624,6 +805,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>SerializedProduct</objectType>
+    </variables>
+    <variables>
+        <name>TerminateFlow</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>VisitId</name>

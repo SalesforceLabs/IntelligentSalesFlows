@@ -1,8 +1,9 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import getProductLocations from '@salesforce/apex/FetchRecordLists.getProductLocations';
+import getProductLocations from '@salesforce/apex/MedicalDeviceRequestController.getProductLocations';
+import getSerilizedProducts from '@salesforce/apex/MedicalDeviceRequestController.fetchSerilizedProductsforHandover';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { NavigationMixin } from 'lightning/navigation';
-import { FlowNavigationNextEvent , FlowNavigationPauseEvent   } from 'lightning/flowSupport';
+import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 
 import DATE_FIELD from '@salesforce/schema/Case.Requested_Date__c';
 import QTY_FIELD from '@salesforce/schema/Case.Quantity__c';
@@ -18,7 +19,7 @@ import FROMDATE_FIELD from '@salesforce/schema/Case.From_Date__c';
 import TODATE_FIELD from '@salesforce/schema/Case.To_Date__c';
 
 export default class RequestHandOverProduct extends NavigationMixin(LightningElement) {
-
+    @api cancelFlow = false;
     @api caseId;
     @api isSample;
     @api availableActions = [];
@@ -28,21 +29,23 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     @api quantitylabel;
     @api datelabel;
     @api serialNumbers = [];
-    @api flowNametoInvoke;
+    @api productLocation;
+    @api serialNumbersLength = 0;
+    @api handoverDetailsHeader;
+    @api handoverProductHeader;
+    @track allSerlializedProducts = [];
     @track rows = [];
+    @track LocationList;
     isLoaded = false;
 
-    @track options;
-    productLocation;
+    @track options = [];
     error;
     caseDetail;
-    caseRecord;
 
-    @wire(getRecord, { recordId: '$caseId', layoutTypes: ['Full'], modes: ['View'] })
+    @wire(getRecord, { recordId: '$caseId', fields: [DATE_FIELD, QTY_FIELD, ACCOUNT_FIELD, ACCOUNT_ID, CONTACT_ID, PRODUCT_ID, LOCATION_ID, CONTACT_FIELD, LOCATION_FIELD, PRODUCT_FIELD, FROMDATE_FIELD, TODATE_FIELD] })//layoutTypes: ['Full'], modes: ['View']
     wireCase({ data, error }) {
         if (data) {
             this.isLoaded = true;
-            this.caseRecord = data;
             this.caseDetail = {};
             this.caseDetail['Account'] = getFieldValue(data, ACCOUNT_FIELD);
             this.caseDetail['Contact'] = getFieldValue(data, CONTACT_FIELD);
@@ -65,8 +68,11 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
                     this.rows.push({ serialNumber: '' });
                 }
             }
-        } else {
+            console.log('log&&&')
+        } else if (error) {
+            this.error = error;
             this.isLoaded = false;
+            console.error(error);
         }
     }
 
@@ -78,28 +84,58 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
         }
     }
 
+    get isLoaded() {
+        return !this.wiredPrdLocations.data && !this.wiredPrdLocations.error;
+    }
+
     @wire(getProductLocations, { accountId: '$caseDetail.AccountId', productId: '$caseDetail.ProductId' })
     wiredPrdLocations({ data, error }) {
+        this.options = [];
+        this.options.push({ label: '--None--', value: '' });
         if (data) {
-            //alert('-->data'+data);
-            this.options = [];
-            for (var i = 0; i < data.length; i++) {
-                this.options.push({ label: data[i].Location.Name, value: data[i].Location.Id });
+            this.LocationList = data;
+            for (var i = 0; i < this.LocationList.length; i++) {
+                this.options.push({ label: this.LocationList[i].Name, value: this.LocationList[i].Id });
             }
+            console.log(data);
+        }
+        else {
             this.error = undefined;
-        } else if (error) {
-            console.log(error)
-            this.error = error;
-            this.options = undefined;
         }
     }
 
+    @wire(getSerilizedProducts, { productId: '$caseDetail.ProductId', locationId: '$productLocation' })
+    wiredSerilizedProducts({ data, error }) {
+        if (data) {
+            console.log(data)
+            this.allSerlializedProducts = data;
+            this.error = undefined;
+        } else if (error) {
+            this.error = error;
+            console.error(error);
+        }
+    }
 
     handleChange(event) {
         let index = event.target.dataset.index;
-        this.rows[index].serialNumber = event.target.value;
-        console.log(this.rows);
+
+        let enteredValue = this.template.querySelector("[data-target-id='" + index + "']");
+        let enteredSerialNumber = enteredValue.value;
+
+        if (enteredSerialNumber && this.allSerlializedProducts.length == 0)
+            enteredValue.setCustomValidity('No Serialized Products found at the selected Product location');
+        else if (enteredSerialNumber && !this.allSerlializedProducts.includes(enteredSerialNumber))
+            enteredValue.setCustomValidity('Please enter valid Serial Number');
+        else if (enteredSerialNumber && this.rows.length > 1 && this.rows.find(e => e.serialNumber == enteredSerialNumber))
+            enteredValue.setCustomValidity('Duplicate Serial Number Entered');
+        else
+            enteredValue.setCustomValidity('');
+
+        enteredValue.reportValidity();
+
+        this.rows[index].serialNumber = enteredSerialNumber;
     }
+
 
     handleProdtLocation(event) {
         this.productLocation = event.detail.value;
@@ -122,8 +158,26 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     }
 
     handleGoNext() {
-        this.serialNumbers = this.rows.map(row => row.serialNumber);
-        console.log(this.serialNumbers)
+        if (this.isInputValid()) {
+            this.serialNumbers = this.rows.map(row => row.serialNumber);
+
+            for (let i = 0; i < this.serialNumbers.length; i++) {
+                if (this.serialNumbers[i] != '') {
+                    this.serialNumbersLength = this.serialNumbersLength + 1;
+                }
+            }
+
+            // check if NEXT is allowed on this screen
+            if (this.availableActions.find((action) => action === 'NEXT')) {
+                // navigate to the next screen
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
+        }
+    }
+
+    handleCancel() {
+        this.cancelFlow = true;
         // check if NEXT is allowed on this screen
         if (this.availableActions.find((action) => action === 'NEXT')) {
             // navigate to the next screen
@@ -132,25 +186,15 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
         }
     }
 
-    handleCancel(event) {
-        console.log('test',this.availableActions)
-        try {
-            if (this.availableActions.find((action) => action === 'PAUSE')) {
-                // navigate to the next screen
-                const navigateNextEvent = new FlowNavigationPauseEvent();
-                this.dispatchEvent(navigateNextEvent);
+    isInputValid() {
+        let isValid = true;
+        let inputFields = this.template.querySelectorAll('.validate');
+        inputFields.forEach(inputField => {
+            if (!inputField.checkValidity()) {
+                inputField.reportValidity();
+                isValid = false;
             }
-        } catch (error) {
-            console.log(error)
-        }
-        //event.preventDefault();
-        
-
-       /* const flowDetails = { 'flowName': this.flowNametoInvoke };
-        const filterChangeEvent = new CustomEvent('invokeflow', {
-            detail: { flowDetails }, bubbles: true, composed: true
         });
-        this.dispatchEvent(filterChangeEvent);*/
-
+        return isValid;
     }
 }

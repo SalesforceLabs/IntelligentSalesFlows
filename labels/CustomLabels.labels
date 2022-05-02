@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ESignatureCanvasHeader</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESignatureCanvasHeader</shortDescription>
+        <value>Signature</value>
+    </labels>
+    <labels>
+        <fullName>ESignatureClear</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESignatureClear</shortDescription>
+        <value>Clear</value>
+    </labels>
+    <labels>
+        <fullName>ESignatureDefaultHeader</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESignatureDefaultHeader</shortDescription>
+        <value>Add Signature</value>
+    </labels>
+    <labels>
+        <fullName>ESignatureDisclaimer</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ESignatureDisclaimer</shortDescription>
+        <value>By signing this document on behalf of</value>
+    </labels>
+    <labels>
+        <fullName>EsignatureCancel</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EsignatureCancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>EsinatureDone</fullName>
+        <categories>Signature</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EsinatureDone</shortDescription>
+        <value>Complete</value>
+    </labels>
+</CustomLabels>

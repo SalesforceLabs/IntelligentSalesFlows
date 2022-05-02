@@ -3,15 +3,28 @@ dt, dd{
     margin:0;
 }
 dt{
-    width:30%;
+    width:40%;
     word-wrap: break-word;
     color: #444444;
+    vertical-align: top;
 }
 dd{
-    width:69%;
+    width:60%;
     word-wrap: break-word;
     color: #24385E;
 }
 .borer-bottom {
     border-bottom: 2px solid blue;
+}
+
+.inline {
+    width: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.inline-next {
+    width: calc(90% - 15px);
+    display: inline-block;
+    vertical-align: middle;
 }

@@ -1,5 +1,5 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import fetchCaseRequests from '@salesforce/apex/FetchRecordLists.fetchCaseRequests';
+import fetchCaseRequests from '@salesforce/apex/MedicalDeviceRequestController.fetchCaseRequests';
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class RequestedListViewsCmp extends NavigationMixin(LightningElement) {

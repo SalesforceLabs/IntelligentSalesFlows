@@ -1,21 +1,24 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import getRelatedFulfillmentLocations from '@salesforce/apex/PicklistOptionsController.getRelatedFulfillmentLocations';
-import getRelatedContacts from '@salesforce/apex/PicklistOptionsController.getRelatedContacts';
-import getOrders from '@salesforce/apex/FetchRecordLists.getOrders';
+import getRelatedFulfillmentLocations from '@salesforce/apex/MarkForOrderController.getRelatedFulfillmentLocations';
+import getOrders from '@salesforce/apex/MarkForOrderController.getOrders';
+import getSelectedOrder from '@salesforce/apex/MarkForOrderController.getOrderById';
+
 import { FlowNavigationNextEvent, FlowNavigationBackEvent } from 'lightning/flowSupport';
 const DELAY = 300;
-
+const now = new Date(new Date().setDate(new Date().getDate()));
+const pastDate = new Date(new Date().setDate(new Date().getDate() - 31));
 export default class MarkProductForOrder extends LightningElement {
     @api availableActions = [];
     @api locationId;
     @api contactId;
+    @api contactName;
     @api accountId;
     @api orderId;
-    @api value = 'existing';
+    @api priceBookId;
+    @api orderValue = 'existing';
 
     @track locations = [];
     @track data = [];
-    @track relatedContacts = [];
 
     totalRecords;
     rowLimit = 5;
@@ -24,101 +27,92 @@ export default class MarkProductForOrder extends LightningElement {
     isLoading;
     queryTerm = '';
 
+    fromDate = pastDate.toISOString().substring(0, 10);
+    toDate = now.toISOString().substring(0, 10);
+    today = now.toISOString().substring(0, 10);
+
     async handleKeyChange(event) {
+        this.isLoading = true;
         window.clearTimeout(this.delayTimeout);
         const searchKey = event.target.value;
         this.delayTimeout = setTimeout(() => {
             this.queryTerm = searchKey;
+            if (this.queryTerm.length !== 0)
+                this.handleSearch();
+            else
+                this.data = undefined; this.isLoading = false;
         }, DELAY);
-        if (this.queryTerm.length >= 2) {
-            this.totalRecords = 0;
-            this.isLoading = true;
-            this.rowLimit = 5;
-            this.rowOffSet = 0;
-            await this.loadData([]).then(() => {
-                this.isLoading = false;
-            });
-        }
     }
 
-    connectedCallback() {
-        try {
-            this.isLoading = true;
-            this.loadData([]).then(() => {
-                this.isLoading = false;
-            });
-        } catch (error) {
-            console.error(error);
-        }
+    async handleSearch() {
+        this.totalRecords = 0;
+        this.rowLimit = 5;
+        this.rowOffSet = 0;
+        await this.loadData([]).then(() => {
+            this.isLoading = false;
+        });
     }
 
     get options() {
         return [
-            { label: 'Link an existing Order', value: 'existing' },
-            { label: 'Create New', value: 'new' },
+            { label: 'New Order', value: 'new' },
+            { label: 'Existing Order', value: 'existing' }
         ];
     }
 
     @wire(getRelatedFulfillmentLocations, { accId: '$accountId' }) wiredLocations({ data, error }) {
-        this.locations = [];
         if (data) {
-            if (data && data.length) {
-                for (let i = 0; i < data.length; i++) {
-                    this.locations.push({ 'label': data[i].Name, 'value': data[i].Id });
-                }
-            }
-            else {
-                this.locations.push({ 'label': 'None', 'value': '' });
-            }
+            this.locations = data.map(row => {
+                return { label: row.Name, value: row.Id }
+            })
         } else if (error) {
             this.locations.push({ 'label': 'None', 'value': '' });
             console.error(error);
         }
     }
 
-    @wire(getRelatedContacts, { accId: '$accountId' }) wiredContacts({ data, error }) {
-        this.relatedContacts = [];
-        if (data) {
-            if (data && data.length) {
-                for (let i = 0; i < data.length; i++) {
-                    this.relatedContacts.push({ 'label': data[i].Name, 'value': data[i].Id });
-                }
-            } else {
-                this.relatedContacts.push({ 'label': 'None', 'value': '' });
-            }
-        } else if (error) {
-            this.relatedContacts.push({ 'label': 'None', 'value': '' });
-            console.error(error);
+    connectedCallback() {
+        this.handleSelectedOrder();
+    }
+
+    async handleSelectedOrder() {
+        if (this.orderId) {
+            this.isLoading = true;
+            await getSelectedOrder({ orderId: this.orderId })
+                .then(result => {
+                    this.prepareData(result, []);
+                }).catch(error => {
+                    this.error = error;
+                    this.data = undefined;
+                });
+            this.isLoading = false;
         }
     }
 
     get isNew() {
-        return this.value === 'new'
+        return this.orderValue === 'new'
     }
 
     get isExisting() {
-        return this.value === 'existing'
+        return this.orderValue === 'existing'
     }
 
     get getNextButton() {
-        return this.accountId ? false : true;
+        return (this.orderValue === 'existing' && this.accountId) || (this.priceBookId && this.contactId && this.accountId) ? false : true;
     }
 
     handleChange(event) {
         if (event.target.dataset.label === 'location')
             this.locationId = event.detail.value;
-        else if (event.target.dataset.label === 'contact')
-            this.contactId = event.detail.value;
         else if (event.target.dataset.label === 'radioGroup') {
-            this.value = event.detail.value;
+            this.orderValue = event.detail.value;
             this.locationId = '';
             this.contactId = '';
+            this.contactName = '';
+            this.accountId = '';
+            this.orderId = '';
+            this.priceBookId = '';
         }
-    }
-
-    handleSelected(event) {
-        let detail = event.detail;
-        this[detail.label] = detail.value ? detail.value[0] : '';
     }
 
     loadMore(event) {
@@ -135,16 +129,24 @@ export default class MarkProductForOrder extends LightningElement {
         return getOrders({
             queryTerm: this.queryTerm,
             limitSize: this.rowLimit,
-            offset: this.rowOffSet
+            offset: this.rowOffSet,
+            fromDate: this.fromDate,
+            toDate: this.toDate
         }).then(result => {
-            let newData = result.records.map(row => { return { ...row, AccountName: row.Account?.Name, checked: row.Id == this.orderId ? true : false } });
-            this.data = [...data, ...newData];
-            this.totalRecords = result.totalRecords;
-            this.error = undefined;
+            this.totalRecords = result?.totalRecords;
+            this.prepareData(result?.records, data);
         }).catch(error => {
             this.error = error;
             this.data = undefined;
         });
+    }
+
+    prepareData(result, data) {
+        let newData = result.map(row => {
+            return { ...row, AccountName: row.Account?.Name, checked: row.Id == this.orderId ? true : false }
+        });
+        this.data = [...data, ...newData];
+        this.error = undefined;
     }
 
     get loadMoreButton() {
@@ -154,6 +156,7 @@ export default class MarkProductForOrder extends LightningElement {
     handleRadioChange(event) {
         this.orderId = event.target.dataset.value;
         this.accountId = event.target.dataset.id;
+        this.priceBookId = this.data.filter(e => e.Id == this.orderId).map(e => e.Pricebook2Id);
     }
 
     handleGoNext() {
@@ -171,6 +174,24 @@ export default class MarkProductForOrder extends LightningElement {
             const navigateBackEvent = new FlowNavigationBackEvent();
             this.dispatchEvent(navigateBackEvent);
         }
+    }
+
+    lookupRecord(event) {
+        const target = event.detail;
+        this[target.index] = target?.selectedRecord?.Id;
+        this[target.name] = target?.selectedRecord?.Name;
+        if (target?.sObjectApiName == 'Account' && target.selectedRecord == null) {
+            this.template.querySelector("[data-target-id='" + 'contact' + "']").handleRemove();
+        }
+    }
+
+    handleDate(event) {
+        this[event.target.dataset.id] = event.detail.value;
+    }
+
+    handleClear() {
+        this.fromDate = null;
+        this.toDate = null;
     }
 
 }

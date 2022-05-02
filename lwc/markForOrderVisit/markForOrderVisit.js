@@ -1,11 +1,17 @@
 import { LightningElement, track, api } from 'lwc';
-import getRecords from '@salesforce/apex/FetchRecordLists.getVisits';
+import getRecords from '@salesforce/apex/MarkForOrderController.getVisits';
+import { FlowNavigationBackEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
+
 const DELAY = 300;
 export default class MarkForOrderVisit extends LightningElement {
+    @api availableActions = [];
     @api accountId = '';
     @api value;
     @api visitId;
+    @api popupHeader;
+    @api popupMessage;
     @track data = [];
+    showPopup = false;
     totalRecords;
     rowLimit = 5;
     rowOffSet = 0;
@@ -19,27 +25,26 @@ export default class MarkForOrderVisit extends LightningElement {
         const searchKey = event.target.value;
         this.delayTimeout = setTimeout(() => {
             this.queryTerm = searchKey;
+            this.handleSearch();
         }, DELAY);
-        if (this.queryTerm.length >= 2) {
-            this.totalRecords = 0;
-            this.isLoading = true;
-            this.rowLimit = 5;
-            this.rowOffSet = 0;
-            await this.loadData([]).then(() => {
-                this.isLoading = false;
-            });
+    }
+
+    connectedCallback() {
+        try {
+            this.handleSearch();
+        } catch (error) {
+            throw error(error.getMessage());
         }
     }
 
-    async connectedCallback() {
-        try {
-            this.isLoading = true;
-            await this.loadData([]).then(() => {
-                this.isLoading = false;
-            });
-        } catch (error) {
-            console.error(error);
-        }
+    async handleSearch() {
+        this.totalRecords = 0;
+        this.isLoading = true;
+        this.rowLimit = 5;
+        this.rowOffSet = 0;
+        await this.loadData([]).then(() => {
+            this.isLoading = false;
+        });
     }
 
     loadData(data) {
@@ -91,5 +96,30 @@ export default class MarkForOrderVisit extends LightningElement {
             .then(() => {
                 target.isLoading = false;
             });
+    }
+
+    closeModal() {
+        this.showPopup = false;
+    }
+
+    handleNext() {
+        this.showPopup = true;
+    }
+
+    handleConfirmButton() {
+        this.showPopup = false;
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigatenNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigatenNextEvent);
+        }
+    }
+
+    handlePrevious() {
+        if (this.availableActions.find((action) => action === 'BACK')) {
+            // navigate to the next screen
+            const navigateBackEvent = new FlowNavigationBackEvent();
+            this.dispatchEvent(navigateBackEvent);
+        }
     }
 }

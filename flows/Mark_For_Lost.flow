@@ -3,15 +3,14 @@
     <actionCalls>
         <name>Get_Serialized_Products</name>
         <label>Get Serialized Products</label>
-        <locationX>176</locationX>
+        <locationX>710</locationX>
         <locationY>158</locationY>
         <actionName>CycleCountController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Serial_Number_Display</targetReference>
+            <targetReference>Get_Product_Names</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -41,8 +40,8 @@
     <actionCalls>
         <name>Toast_Message</name>
         <label>Toast Message</label>
-        <locationX>176</locationX>
-        <locationY>878</locationY>
+        <locationX>50</locationX>
+        <locationY>1118</locationY>
         <actionName>c:ShowToast</actionName>
         <actionType>component</actionType>
         <faultConnector>
@@ -72,15 +71,14 @@
     <actionCalls>
         <name>Update_Product_Loss</name>
         <label>Update Product Loss</label>
-        <locationX>176</locationX>
-        <locationY>638</locationY>
+        <locationX>50</locationX>
+        <locationY>878</locationY>
         <actionName>HandOverController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Update_Serialized_Products</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -99,7 +97,7 @@
         <inputParameters>
             <name>SelectedSerialNumberIds</name>
             <value>
-                <elementReference>selectedSerialNumberIds</elementReference>
+                <elementReference>SelectedSerialNumberIds</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -110,10 +108,32 @@
         </inputParameters>
         <outputParameters>
             <assignToReference>serializedProducts</assignToReference>
-            <name>serializedProducts</name>
+            <name>SerializedProducts</name>
         </outputParameters>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <decisions>
+        <name>Continue_Terminate</name>
+        <label>Continue/Terminate</label>
+        <locationX>710</locationX>
+        <locationY>518</locationY>
+        <defaultConnectorLabel>Terminate</defaultConnectorLabel>
+        <rules>
+            <name>Continue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Cancel</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Product_Loss_Details</targetReference>
+            </connector>
+            <label>Continue</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>CollectionSetSerializedProducts</name>
         <collectionReference>serializedProducts</collectionReference>
@@ -123,7 +143,7 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <interviewLabel>Mark For Lost {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Mark For Lost</label>
+    <label>Mark As Lost</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -146,27 +166,46 @@
     <recordCreates>
         <name>Create_Lost_Products</name>
         <label>Create Lost Products</label>
-        <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
         <connector>
             <targetReference>Update_Product_Loss</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <inputReference>lostProductList</inputReference>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Product_Names</name>
+        <label>Get Product Names</label>
+        <locationX>710</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Serial_Number_Display</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ProductId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Serialized_Products</name>
         <label>Update Serialized Products</label>
-        <locationX>176</locationX>
-        <locationY>758</locationY>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
         <connector>
             <targetReference>Toast_Message</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <inputReference>serializedProducts</inputReference>
@@ -174,8 +213,8 @@
     <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
-        <locationX>440</locationX>
-        <locationY>998</locationY>
+        <locationX>314</locationX>
+        <locationY>1238</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -190,8 +229,8 @@
     <screens>
         <name>Product_Loss_Details</name>
         <label>Product Loss Details</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -199,20 +238,9 @@
             <targetReference>Create_Lost_Products</targetReference>
         </connector>
         <fields>
-            <name>LostProductDetails</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Capture Details for Product Lost&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
             <name>markforLostProduct</name>
             <extensionName>c:markForLost</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>SerializedProducts</name>
-                <value>
-                    <elementReference>serializedProducts</elementReference>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>popupBodyAssign</name>
                 <value>
@@ -226,9 +254,27 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>selectedSerialNumbers</name>
+                <name>SerializedProducts</name>
                 <value>
-                    <elementReference>selectedSerialNumberIds</elementReference>
+                    <elementReference>serializedProducts</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedSerialNumbersIds</name>
+                <value>
+                    <elementReference>SelectedSerialNumberIds</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>ProductName</name>
+                <value>
+                    <elementReference>Get_Product_Names.Name</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>LocationId</name>
+                <value>
+                    <elementReference>LocationId</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -237,20 +283,24 @@
                 <assignToReference>lostProductList</assignToReference>
                 <name>lostSerializedProducts</name>
             </outputParameters>
+            <outputParameters>
+                <assignToReference>serializedProducts</assignToReference>
+                <name>SerializedProducts</name>
+            </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Serial_Number_Display</name>
         <label>Serial Number Display</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>710</locationX>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Product_Loss_Details</targetReference>
+            <targetReference>Continue_Terminate</targetReference>
         </connector>
         <fields>
             <name>markSerialNumbers</name>
@@ -263,9 +313,9 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>value</name>
+                <name>selectedSerialNumberIds</name>
                 <value>
-                    <elementReference>selectedSerialNumberIds</elementReference>
+                    <elementReference>SelectedSerialNumberIds</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -274,24 +324,45 @@
                     <stringValue>Mark As Lost</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>selectedSerialNumbers</name>
+                <value>
+                    <elementReference>SelectedSerialNumbers</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>selectedSerialNumberIds</assignToReference>
-                <name>value</name>
+                <assignToReference>SelectedSerialNumberIds</assignToReference>
+                <name>selectedSerialNumberIds</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>SelectedSerialNumbers</assignToReference>
+                <name>selectedSerialNumbers</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>Cancel</assignToReference>
+                <name>terminate</name>
             </outputParameters>
         </fields>
-        <showFooter>true</showFooter>
+        <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>584</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Serialized_Products</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>Cancel</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>LocationId</name>
         <dataType>String</dataType>
@@ -322,9 +393,16 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>selectedSerialNumberIds</name>
+        <name>SelectedSerialNumberIds</name>
         <dataType>String</dataType>
-        <isCollection>false</isCollection>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedSerialNumbers</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>

@@ -39,21 +39,21 @@
         </div>
     </template>
     <div if:false={isLoaded}>
-        <lightning-spinner variant="brand" alternative-text="Loading" size="large"> </lightning-spinner>
+        <lightning-spinner if:false={isLoaded} variant="brand" alternative-text="Loading" size="large"> </lightning-spinner>
     </div>
     <lightning-card>
         <div class="slds-p-horizontal_small">
-            <strong>Capture Product Handover Details</strong>
-            <lightning-combobox name="Location" label="Product Location" value={productLocation}
-                placeholder="Select Location" options={options} onchange={handleProdtLocation}></lightning-combobox>
+            <strong>{handoverDetailsHeader}</strong>
+            <lightning-combobox if:true={options} name="Location"  class="validate" label="Location" value={productLocation}
+                placeholder="Select Location" options={options} onchange={handleProdtLocation} required></lightning-combobox>
 
             <div class="slds-p-vertical_medium">
                 <template if:true={rows.length}>
-                    <label><strong>Enter Serial Numbers</strong></label>
+                    <label><strong>{handoverProductHeader}</strong></label>
                     <template for:each={rows} for:item="row" for:index="index">
-                        <lightning-input key={row.index} data-index={index} data-id={row.id}
+                        <lightning-input key={row.index} class="validate" data-index={index} data-target-id={index}
                             onchange={handleChange} type="text" placeholder='Enter Value' value={row.serialNumber}
-                            label="Enter Serial Number"></lightning-input>
+                            label="Serial Number"></lightning-input>
                     </template>
                 </template>
             </div>
@@ -63,7 +63,7 @@
                 <span class="slds-float_right">
                     <lightning-button variant="Netural" label="Cancel" title="Back" onclick={handleCancel}>
                     </lightning-button>
-                    <lightning-button variant="brand" label="Next" title="Next" onclick={handleGoNext}>
+                    <lightning-button class="slds-m-left_small" variant="brand" label="Next" title="Next" onclick={handleGoNext}>
                     </lightning-button>
                 </span>
             </div>

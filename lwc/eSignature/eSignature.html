@@ -4,10 +4,13 @@
   
     <div class="slds-p-around_x-small">
       <div if:false={hideHeader} class="slds-p-bottom_small">
-        <h2 class="header slds-text-heading_medium">{headerMessage}</h2>
+        <label class="header slds-text-heading_small">{headerMessage}</label>
       </div>
       <div>
-        <div class="slds-p-bottom_x-large slds-p-top_small font-color acknowledgement">By signing this document <strong>on behalf of {contactName}</strong>, I agree that Iorem ipsum dolor sit amet,</div>
+        <div class="slds-p-bottom_x-large slds-p-top_small font-color acknowledgement">
+          By signing this request, I hereby certify that:<br><br>
+          (1) I am authorized to act on behalf of <Strong>{contactName}</Strong>;(2) The information contained in this request (including any medical necessity information, if applicable) is true, accurate and complete, to the best of my knowledge; and (3) The {deviceTypeName} device(s) or equipment transferred in this request are being ordered directly for <Strong>{contactName} </Strong> solely for use in their medical practice.      
+        </div>
         <div class="slds-grid slds-gutters">
           <div class="slds-col slds-size_1-of-3 slds-m-bottom_x-small slds-align-bottom canvas-header">
             <span>{labels.CanvasHeader2}</span>
@@ -35,8 +38,14 @@
       <div if:false={hideFooterButtons} class="slds-clearfix footer">
         <button class="slds-button slds-button_brand done slds-float_right slds-m-left_small" onclick={handleDone}
           disabled>{labels.Done2}</button>
-        <button class="slds-button slds-button_neutral slds-float_right cancel"
-          onclick={dispatchCancelAction}>Back</button>
+          <template if:false={isBackButtonEnabled}>
+              <button class="slds-button slds-button_neutral slds-float_right cancel"
+              onclick={dispatchCancelAction}>Back</button>
+          </template>
+          <template if:true={isBackButtonEnabled}>
+            <button class="slds-button slds-button_neutral slds-float_right cancel"
+            onclick={handleCancel}>Cancel</button>
+          </template>
       </div>
     </div>
 
@@ -72,8 +81,8 @@
         </div>
         <!-- Modal/Popup Box LWC footer starts here -->
         <footer class="slds-modal__footer slds-modal__footer_directional">
-          <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
-          <button class="slds-button slds-button_brand" onclick={handleConfirmButton} title="Confirm">Confirm</button>
+          <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">No</button>
+          <button class="slds-button slds-button_brand" onclick={handleConfirmButton} title="Confirm">Yes</button>
         </footer>
       </div>
     </section>

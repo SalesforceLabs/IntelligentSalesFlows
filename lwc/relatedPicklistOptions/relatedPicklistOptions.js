@@ -1,9 +1,9 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import getRelatedContacts from '@salesforce/apex/PicklistOptionsController.getRelatedContacts';
-import getRelatedFulfillmentLocations from '@salesforce/apex/PicklistOptionsController.getRelatedFulfillmentLocations';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import getRelatedAccountLocations from '@salesforce/apex/MedicalDeviceRequestController.getRelatedAccountLocations';
+import { FlowNavigationNextEvent, FlowNavigationBackEvent } from 'lightning/flowSupport';
 
 export default class RelatedPicklistOptions extends LightningElement {
+    @api availableActions = [];
     @api accountId;
     @api contactId;
     @api locationId;
@@ -12,29 +12,27 @@ export default class RelatedPicklistOptions extends LightningElement {
     @api locationName;
     @api providerfieldLabel;
     @api accountFieldname;
+    @api iconName;
+    @api objectApiName;
+    @api fieldLabel;
+    @api placeHolder;
+    @api recordIdValue;
+    @api recordNameValue;
+    @api contactIconName;
+    @api contactObjectApiName;
+    @api contactPlaceHolder;
+    @api contactRecordIdValue;
+    @api contactRecordNameValue;
+    @api cancelFlow = false;
+    @api accountFieldLabel;
+    @api contactFieldLabel;
     @track relatedContactOptions;
     @track relatedLocationOptions;
     @track contactList;
     @track LocationList;
 
-    @api accountFieldLabel = 'Select Hospital Account Requesting Sample';
-    @api contactFieldLabel = 'Select Doctor/Provider';
-     @wire(getRelatedContacts, { accId: '$accountId' }) wiredOpps({ data, error }) {
-        let options = [];
-        options.push({ label: '--None--', value: '' });
-        if (data) {
-            this.contactList = data;
-            for (var i = 0; i < this.contactList.length; i++) {
-                options.push({ label: this.contactList[i].Name, value: this.contactList[i].Id });
-            }
-            console.log(data);
-        } else if (error) {
-            console.log(error);
-        }
-        this.relatedContactOptions = options;
-    }
-
-    @wire(getRelatedFulfillmentLocations, { accId: '$accountId' }) wiredrelatedLocation({ data, error }) {
+    @wire(getRelatedAccountLocations, { accId: '$accountId' }) wiredrelatedLocation({ data, error }) {
+    //@wire(getRelatedFulfillmentLocations) wiredrelatedLocation({ data, error }) {
         let options = [];
         options.push({ label: '--None--', value: '' });
         if (data) {
@@ -44,30 +42,53 @@ export default class RelatedPicklistOptions extends LightningElement {
             }
             console.log(data);
         } else if (error) {
+            options.push({ label: '--None--', value: '' });
             console.log(error);
         }
         this.relatedLocationOptions = options;
     }
 
-    handleContactsChange(event) {
-        this.contactId = event.detail.value;
-        this.contactName = event.target.options.find(opt => opt.value === event.detail.value).label;
-    }
 
     handleLocationsChange(event) {
         this.locationId = event.detail.value;
         this.locationName = event.target.options.find(opt => opt.value === event.detail.value).label;
     }
-    
+
     lookupRecord(event) {
         const target = event.detail;
-        console.log(JSON.stringify(event.detail))
-        if(target.sObjectApiName == 'Account'){
+        if (target?.sObjectApiName == 'Account' && target.selectedRecord == null) {
+            this.template.querySelector("[data-target-id='" + 'contact' + "']").handleRemove();
+            this.relatedLocationOptions = [];
+            this.relatedLocationOptions.push({ label: '--None--', value: '' });
+        }
+        if (target?.sObjectApiName == 'Account') {
             this.accountId = target?.selectedRecord?.Id;
-            this.accountName  = target?.selectedRecord?.Name;
-        }else{
+            this.accountName = target?.selectedRecord?.Name;
+        } else if (target?.sObjectApiName == 'Contact') {
             this.contactId = target?.selectedRecord?.Id;
-            this.contactName  = target?.selectedRecord?.Name;
+            this.contactName = target?.selectedRecord?.Name;
         }
     }
+
+    handleGoNext() {
+        console.log(this)
+        if (this.contactId && this.accountId && this.locationId) {
+            // check if NEXT is allowed on this screen
+            if (this.availableActions.find((action) => action === 'NEXT')) {
+                // navigate to the next screen
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
+        }
+
+    }
+    handleCancel() {
+        this.cancelFlow = true;
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+        }
+    }
+
 }

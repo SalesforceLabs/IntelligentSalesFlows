@@ -13,9 +13,11 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="accountId" label="Account Id" type="String" />
             <property name="contactId" label="Contact Id" type="String" />
+            <property name="contactName" label="Contact Name" type="String" role='outputOnly'/>
             <property name="locationId" label="Location Id" type="String" />
+            <property name="priceBookId" label="PriceBook Id" type="String" />
             <property name="orderId" label="Order Id" type="String" />
-            <property name="value" label="Type (new order or existing order)" type="String" />
+            <property name="orderValue" label="Type (new order or existing order)" type="String" />
       </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-form-element" onmouseleave={toggleResult} data-source="lookupContainer">
+    <div class="slds-p-vertical_xx-small slds-form-element" onmouseleave={toggleResult} data-source="lookupContainer">
         <div class="slds-combobox_container slds-has-selection">
             <label class="slds-form-element__label" for="combobox-id-1">
                 <template if:true={required}><abbr title="required"
@@ -11,7 +11,7 @@
                         <!--Lookup Input Field-->
                         <lightning-input type="search" data-source="searchInputField" onclick={toggleResult}
                             onchange={handleKeyChange} is-loading={isSearchLoading} value={searchKey}
-                            variant="label-hidden" placeholder={placeholder} required={required}></lightning-input>
+                            variant="label-hidden" placeholder={placeholder}  ></lightning-input>
                     </div>
 
                     <!--Lookup Selected record pill container start-->

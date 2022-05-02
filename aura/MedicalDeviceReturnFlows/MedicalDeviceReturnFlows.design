@@ -1,0 +1,17 @@
+<design:component>
+    
+    <design:attribute name="title" label="Title" />
+    
+    <design:attribute name="caseType" label="Case Type" />
+    <design:attribute name="loanReturnsTitleheaderName" label="Loan Returns Header Name" />
+    <design:attribute name="trialReturnsTitleHeaderName" label="Trial Returns Header Name" />
+    <design:attribute name="newflowName" label="New Flow Name" />
+    <design:attribute name="returnFlowInvoke" label="Return Flow Name" />
+    <design:attribute name="newButtonName" label="New Button Name" />
+    
+    <design:attribute name="listviewQuantity" label="List Views Quantity Label" />
+    <design:attribute name="listviewDuration" label="List Views Duration Label" />
+    <design:attribute name="showReturnListViews" label="Show Return List Views" />
+    <design:attribute name="viewReturnListButtons" label="Show Return List Buttons" /> 
+	
+</design:component>
