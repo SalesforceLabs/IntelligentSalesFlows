@@ -1,5 +1,5 @@
 <template>
-    <Strong>Related Opportunity</Strong><br>
+    <div class="ro-header"><b>Related Opportunity</b></div><br>
     <lightning-radio-group name="radioGroup"
     label="New or Existing Opportunity?"
     options={options}
@@ -11,7 +11,7 @@
     <template for:each={oppList} for:item="opp">
             <li key={opp.Id} class=" slds-p-horizontal_small  slds-p-vertical_small slds-border_bottom">
             <dl>
-                <lightning-layout>
+                <lightning-layout vertical-align="center">
                     <lightning-layout-item><lightning-input key={opp.Id} data-value={opp.Id} type="radio"  name="radio" value={opp} onchange={handleRadioChange}></lightning-input></lightning-layout-item>
                     <lightning-layout-item> <strong>{opp.Name}</strong>     
                     </lightning-layout-item>
@@ -44,7 +44,7 @@
         </template><br>
         <template if:true={isLoadingData}>
             <lightning-button class="slds-align_absolute-center" label="Load More.." onclick={handleLoadMore}></lightning-button>
-        </template>
+        </template><br>
     </ul>
     <div  if:false={hideFooterButtons} class="slds-clearfix footer">
         <button class="slds-button slds-button_brand slds-float_right slds-m-left_small done" onclick={handleNextButton} disabled>Next</button>

@@ -11,9 +11,9 @@ public with sharing class LookupController {
         }else if(sObjectApiName == 'Contact'){
             sQuery = 'Select Id,Name,AccountId  From ' + sObjectApiName + ' WHERE AccountId=:accountId AND  Name Like : sWildCardText order by createdDate DESC LIMIT 5';            
         }else if(string.isNotBlank(sWildCardText)){
-            sQuery = 'Select Id,Name From ' + sObjectApiName + ' WHERE Name Like : sWildCardText order by createdDate DESC LIMIT 5';                        
+            sQuery = 'Select Id,Name From ' + String.escapeSingleQuotes(sObjectApiName) + ' WHERE Name Like : sWildCardText order by createdDate DESC LIMIT 5';                        
         }else{
-            sQuery = 'Select Id,Name From ' + sObjectApiName + ' WHERE LastViewedDate != NULL ORDER BY   LastViewedDate DESC LIMIT 5';                        
+            sQuery = 'Select Id,Name From ' + String.escapeSingleQuotes(sObjectApiName) + ' WHERE LastViewedDate != NULL ORDER BY   LastViewedDate DESC LIMIT 5';                        
         }
         for (sObject obj: database.query(sQuery)) {
             returnList.add(obj);
@@ -24,6 +24,6 @@ public with sharing class LookupController {
     // Method to fetch lookup default value 
     @AuraEnabled(cacheable=true)
     public static sObject fetchDefaultRecord(string recordId , string sObjectApiName) {
-        return database.query('Select Id, Name From ' + sObjectApiName + ' Where Id = : recordId LIMIT 1');
+        return database.query('Select Id, Name From ' + String.escapeSingleQuotes(sObjectApiName) + ' Where Id = : recordId LIMIT 1');
     }
 }

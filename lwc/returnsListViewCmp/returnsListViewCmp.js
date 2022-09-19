@@ -1,5 +1,6 @@
 import { LightningElement, track, wire, api } from 'lwc';
 import fetchCaseReturns from '@salesforce/apex/MedicalDeviceReturnController.fetchCaseReturns';
+import fetchAllCaseReturns from '@salesforce/apex/MedicalDeviceReturnController.fetchAllCaseReturns';
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class ReturnsListViewCmp extends NavigationMixin(LightningElement) {
@@ -24,12 +25,12 @@ export default class ReturnsListViewCmp extends NavigationMixin(LightningElement
     @track records = [];
     @track rowLimit = 4;
     @track rowOffSet = 0;
-    @track listViews = [
-        { 'label': 'Loaned Products', value: 'Loaner_Returns' },
-        { 'label': 'Trial Products', value: 'Trial_Returns' }
-    ];
+    @track listViews = [];
+    @track loanRecCount = 0;
+    @track trialRecCount = 0;
     
     connectedCallback() {
+        this.loadAllRecords();
         if (this.caseType == 'Loan Device Return') {
             //this.isHandOver = false;
             this.headerName = this.loanReturnsTitleheaderName;
@@ -39,7 +40,25 @@ export default class ReturnsListViewCmp extends NavigationMixin(LightningElement
             this.headerName = this.trialReturnsTitleHeaderName;
         }
     }
-
+    loadAllRecords() {
+        fetchAllCaseReturns()
+            .then(result => {
+                //console.log("approvedd = " + result.approvedRecCount);
+                this.loanRecCount = result.loanRecCount;
+                this.trialRecCount = result.trialRecCount;
+                this.listViews = [
+                    { 'label': 'Loaned Products (' + this.loanRecCount + ')', value: 'Loaner_Returns' },
+                    { 'label': 'Trial Products (' + this.trialRecCount + ')', value: 'Trial_Returns' }
+                ];
+                this.error = undefined;
+            })
+            .catch(error => {
+                alert('error' + error);
+                this.error = error;
+                this.approvedRecordsCount = undefined;
+                this.openRecordsCount = undefined;
+            });
+    }
     handleSelectedListView(event) {
         event.preventDefault();
         this.selectedListView = event.currentTarget.dataset.id;
@@ -53,7 +72,7 @@ export default class ReturnsListViewCmp extends NavigationMixin(LightningElement
             this.showReturnListViews = true;
             this.caseType = 'Loan Device Return';
             this.listviewDuration = 'Loan End date';
-            this.headerName = this.loanReturnsTitleheaderName;
+            this.headerName = this.loanReturnsTitleheaderName + '(' + this.loanRecCount + ')';
             this.returnFlowInvoke = 'Loaner_Return';
             this.loadData();
            
@@ -63,7 +82,7 @@ export default class ReturnsListViewCmp extends NavigationMixin(LightningElement
             this.caseType = 'Trial Device Return';
             this.listviewDuration = 'Trial End date';
             //this.isHandOver = true;
-            this.headerName = this.trialReturnsTitleHeaderName;
+            this.headerName = this.trialReturnsTitleHeaderName + '(' + this.trialRecCount + ')';
             this.returnFlowInvoke = 'Trial_Return';
             this.loadData();
            

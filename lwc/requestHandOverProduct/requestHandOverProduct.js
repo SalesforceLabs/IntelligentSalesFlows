@@ -33,6 +33,7 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     @api serialNumbersLength = 0;
     @api handoverDetailsHeader;
     @api handoverProductHeader;
+    @api contactName;
     @track allSerlializedProducts = [];
     @track rows = [];
     @track LocationList;
@@ -49,6 +50,7 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
             this.caseDetail = {};
             this.caseDetail['Account'] = getFieldValue(data, ACCOUNT_FIELD);
             this.caseDetail['Contact'] = getFieldValue(data, CONTACT_FIELD);
+            this.contactName = getFieldValue(data, CONTACT_FIELD);
             this.caseDetail['Quantity'] = getFieldValue(data, QTY_FIELD);
             this.caseDetail['Location'] = getFieldValue(data, LOCATION_FIELD);
             this.caseDetail['Product'] = getFieldValue(data, PRODUCT_FIELD);
@@ -132,8 +134,9 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
             enteredValue.setCustomValidity('');
 
         enteredValue.reportValidity();
-
-        this.rows[index].serialNumber = enteredSerialNumber;
+        if(this.allSerlializedProducts.includes(enteredSerialNumber)){
+            this.rows[index].serialNumber = enteredSerialNumber;
+        }
     }
 
 
