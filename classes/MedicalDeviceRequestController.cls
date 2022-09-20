@@ -83,5 +83,20 @@ public with sharing class MedicalDeviceRequestController {
     public static List<Case> fetchCaseRequests(String status, String type, Integer limitSize, Integer offset){
         return [Select Id,CaseNumber,Account.Name,AccountId, ContactId ,Status,Type,Subject,ProductId,Product.Name,Location__r.Name,Location__c,Requested_Date__c,Quantity__c, From_Date__c ,To_Date__c, Contact.Name  FROM Case WHERE Status=:status AND Type=:type ORDER BY Account.Name DESC LIMIT:limitSize OFFSET:offset];
     }
+    /*
+    Method: fetchAllCaseRequests
+    Developer : psahoo
+    Date: 11/08/2022
+    Description: This Method is used to get all the record values of the request cases
+    */
+    @AuraEnabled
+    public static Map<String, Integer> fetchAllCaseRequests(String type){
+        Integer approvedRecCount = [Select count() FROM Case WHERE Status='Approved' AND Type=:type];
+        Integer openRecCount = [Select count() FROM Case WHERE Status='In Review' AND Type=:type];
+        return new Map<String, Integer> {
+            'approvedRecCount' => approvedRecCount, 
+            'openRecCount' => openRecCount
+        };
+    }
 
 }

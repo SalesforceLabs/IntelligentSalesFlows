@@ -1,5 +1,6 @@
 import { LightningElement, track, wire, api } from 'lwc';
 import fetchCaseRequests from '@salesforce/apex/MedicalDeviceRequestController.fetchCaseRequests';
+import fetchAllCaseRequests from '@salesforce/apex/MedicalDeviceRequestController.fetchAllCaseRequests';
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class RequestedListViewsCmp extends NavigationMixin(LightningElement) {
@@ -30,12 +31,12 @@ export default class RequestedListViewsCmp extends NavigationMixin(LightningElem
     @track records = [];
     @track rowLimit = 4;
     @track rowOffSet = 0;
-    @track listViews = [
-        { 'label': 'Open Requests', value: 'open_Requests' },
-        { 'label': 'Approved Requests', value: 'Approved_Requests' }
-    ];
+    @track approvedRecordsCount = 0;
+    @track openRecordsCount = 0;
+    @track listViews = [];
 
     connectedCallback() {
+        this.loadAllRecords();
         if (this.caseStatus == 'In Review') {
             this.isHandOver = false;
             this.headerName = this.openTitleheaderName;
@@ -70,7 +71,7 @@ export default class RequestedListViewsCmp extends NavigationMixin(LightningElem
             this.viewLists = false;
             this.showRequestedListViews = true;
             this.caseStatus = 'In Review';
-            this.headerName = this.openTitleheaderName;
+            this.headerName = this.openTitleheaderName + '(' + this.openRecordsCount + ')';
             this.loadData();
         } else if (this.selectedListView == 'Approved_Requests') {
             this.records = [];
@@ -78,7 +79,7 @@ export default class RequestedListViewsCmp extends NavigationMixin(LightningElem
             this.showRequestedListViews = true;
             this.caseStatus = 'Approved';
             this.isHandOver = true;
-            this.headerName = this.approvedTitleHeaderName;
+            this.headerName = this.approvedTitleHeaderName + '(' + this.approvedRecordsCount + ')';
             this.loadData();
         }
     }
@@ -122,7 +123,25 @@ export default class RequestedListViewsCmp extends NavigationMixin(LightningElem
                 this.records = undefined;
             });
     }
-
+    loadAllRecords() {
+        fetchAllCaseRequests({type: this.caseType})
+            .then(result => {
+                console.log("approvedd = " + result.approvedRecCount);
+                this.approvedRecordsCount = result.approvedRecCount;
+                this.openRecordsCount = result.openRecCount;
+                this.listViews = [
+                    { 'label': 'Open Requests (' + this.openRecordsCount + ')', value: 'open_Requests' },
+                    { 'label': 'Approved Requests (' + this.approvedRecordsCount + ')', value: 'Approved_Requests' }
+                ];
+                this.error = undefined;
+            })
+            .catch(error => {
+                alert('error' + error);
+                this.error = error;
+                this.approvedRecordsCount = undefined;
+                this.openRecordsCount = undefined;
+            });
+    }
     handleLoadMore(event) {
         const currentRecord = this.records;
         const { target } = event;

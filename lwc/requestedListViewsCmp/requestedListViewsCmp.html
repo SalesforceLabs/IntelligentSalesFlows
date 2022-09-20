@@ -29,7 +29,7 @@
         <lightning-card variant="Narrow">
             <lightning-layout>
                 <lightning-layout-item class="slds-m-left_small"><lightning-icon size="medium" icon-name="standard:case"></lightning-icon></lightning-layout-item>
-                <lightning-layout-item class="slds-m-left_small">  <p class="slds-text-heading_medium">{headerName}</p>{recordsCount} items, sorted by Account Name</lightning-layout-item>
+                <lightning-layout-item class="slds-m-left_small">  <p class="slds-text-heading_medium">{headerName}</p>sorted by Account Name</lightning-layout-item>
             </lightning-layout>
             <div class="slds-p-horizontal_small">
             <ul class="list">
@@ -77,16 +77,16 @@
                                 <span class="inline"> : </span> <a class="inline-next" data-acc={rec.AccountId} onclick={handleURLAcc}>{rec.AccountName}</a>
                             </dd>
                             <dt class="md-colon">
-                                Provider
-                            </dt>
-                            <dd>
-                                <span class="inline"> : </span> <a class="inline-next" data-con={rec.ContactId} onclick={handleURLCon}>{rec.ContactName}</a>
-                            </dd>
-                            <dt class="md-colon">
                                 Location
                             </dt>
                             <dd>
                                 <span class="inline"> : </span> <a class="inline-next" data-loc={rec.Location__c} onclick={handleURLLoc}>{rec.LocationName}</a>
+                            </dd>
+                            <dt class="md-colon">
+                                Provider
+                            </dt>
+                            <dd>
+                                <span class="inline"> : </span> <a class="inline-next" data-con={rec.ContactId} onclick={handleURLCon}>{rec.ContactName}</a>
                             </dd>
                             <dt class="md-colon">
                                 Status

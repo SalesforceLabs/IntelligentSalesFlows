@@ -109,8 +109,8 @@
         <picklistField>StageName</picklistField>
         <picklistObject>Opportunity</picklistObject>
     </dynamicChoiceSets>
-    <interviewLabel>Trial Request {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Trial Request</label>
+    <interviewLabel>New Trial Request {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>New Trial Request</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -828,12 +828,6 @@
                     <stringValue>Link to a New opportunity.</stringValue>
                 </value>
             </inputParameters>
-            <inputParameters>
-                <name>title</name>
-                <value>
-                    <stringValue>Trial Request</stringValue>
-                </value>
-            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -918,6 +912,9 @@
             <name>Stage</name>
             <choiceReferences>StageName</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>Prospecting</stringValue>
+            </defaultValue>
             <fieldText>Stage</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
@@ -937,7 +934,7 @@
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Request_Summary_Screen</name>
@@ -971,7 +968,7 @@
         </fields>
         <fields>
             <name>Summary_Details</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Product: &lt;/span&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;{!outputProductRecordName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Requested &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Quantity&lt;/span&gt;&lt;span style=&quot;color: rgb(118, 97, 97);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 174, 174);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(21, 21, 21);&quot;&gt;{!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Duration&lt;/span&gt;&lt;span style=&quot;color: rgb(125, 108, 108);&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt;{!ouptutFromdate} to {!outPutToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 104, 104);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!outputaccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 103, 103);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocationId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!realtedLocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(127, 107, 107);&quot;&gt;﻿&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Provider&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(127, 107, 107);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!relatedContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;background-color: rgb(255, 255, 255); color: rgb(39, 99, 221);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Product&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;: &lt;/span&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;{!outputProductRecordName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Requested &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Quantity&lt;/span&gt;&lt;span style=&quot;color: rgb(118, 97, 97);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 174, 174);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(21, 21, 21);&quot;&gt;{!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Duration&lt;/span&gt;&lt;span style=&quot;color: rgb(125, 108, 108);&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt;{!ouptutFromdate} to {!outPutToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 104, 104);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!outputaccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 103, 103);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocationId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!realtedLocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(127, 107, 107); background-color: rgb(255, 255, 255);&quot;&gt;﻿&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Provider&lt;/span&gt;&lt;span style=&quot;color: rgb(127, 107, 107); background-color: rgb(255, 255, 255);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!relatedContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(39, 99, 221); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>

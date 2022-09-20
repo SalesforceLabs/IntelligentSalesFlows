@@ -1,4 +1,4 @@
-public class PatientRegistrationController {
+public with sharing class PatientRegistrationController {
     @AuraEnabled(cacheable = true)
     public static recordsWrapper getContacts(String queryTerm, Integer limitSize, Integer offset){
         try {
@@ -9,8 +9,8 @@ public class PatientRegistrationController {
             Matcher matchDate = datePattern.matcher(String.escapeSingleQuotes(queryTerm));
             
             if(string.isNotBlank(queryTerm) && !matchDate.matches()){
-                String searchKey = '\'%' + String.escapeSingleQuotes(queryTerm)  + '%\'';
-                strQuery += ' WHERE IsPersonAccount = TRUE AND (Name LIKE '+searchKey+' OR FirstName LIKE '+searchKey+' OR LastName LIKE '+searchKey+' OR PersonEmail LIKE '+searchKey+')';
+                String searchKey = '%' + queryTerm  + '%';
+                strQuery += ' WHERE IsPersonAccount = TRUE AND (Name LIKE : searchKey OR FirstName LIKE : searchKey OR LastName LIKE : searchKey OR PersonEmail LIKE : searchKey)';
             }
             else if(matchDate.matches()){
                 strQuery += ' WHERE IsPersonAccount = TRUE AND (PersonBirthdate ='+Date.parse(queryTerm)+')';

@@ -38,6 +38,9 @@ export default class CaptureRequestProductDetails extends LightningElement {
     }
 
     handleGoNext() {
+        this.template.querySelectorAll('lightning-input').forEach(element => {
+            element.reportValidity();
+        });
         if (this.productId && this.isInputValid() && this.isToDateValid() && this.validInput()) {
             // check if NEXT is allowed on this screen
             if (this.availableActions.find((action) => action === 'NEXT')) {

@@ -71,7 +71,9 @@ export default class RelatedPicklistOptions extends LightningElement {
     }
 
     handleGoNext() {
-        console.log(this)
+        this.template.querySelectorAll('lightning-combobox').forEach(element => {
+            element.reportValidity();
+        });
         if (this.contactId && this.accountId && this.locationId) {
             // check if NEXT is allowed on this screen
             if (this.availableActions.find((action) => action === 'NEXT')) {
