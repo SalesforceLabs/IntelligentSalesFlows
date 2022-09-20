@@ -11,6 +11,7 @@
             <targetReference>Get_Product_Names</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -79,6 +80,7 @@
             <targetReference>Update_Serialized_Products</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -172,6 +174,7 @@
             <targetReference>Update_Product_Loss</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <inputReference>lostProductList</inputReference>
@@ -206,6 +209,7 @@
             <targetReference>Toast_Message</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Error_Screen</targetReference>
         </faultConnector>
         <inputReference>serializedProducts</inputReference>
@@ -355,7 +359,7 @@
             <targetReference>Get_Serialized_Products</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>Cancel</name>
         <dataType>Boolean</dataType>

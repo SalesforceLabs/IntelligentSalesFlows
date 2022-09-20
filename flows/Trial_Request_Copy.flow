@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionCalls>
-        <name>Case_Creation_Toast</name>
-        <label>Case Creation Toast</label>
+        <name>show_Toast</name>
+        <label>show Toast</label>
         <locationX>50</locationX>
-        <locationY>1358</locationY>
+        <locationY>1718</locationY>
         <actionName>c:ShowToast</actionName>
         <actionType>component</actionType>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Fault_Screen</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>message</name>
             <value>
-                <stringValue>Loan request was created.</stringValue>
+                <stringValue>Trial request was created.</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -27,11 +26,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <choices>
+        <name>existingOpportunity</name>
+        <choiceText>Existing Opportunity</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>option1</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>NewOpportunity</name>
+        <choiceText>New Opportunity</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>option2</stringValue>
+        </value>
+    </choices>
     <decisions>
-        <name>Continue_or_Terminate</name>
-        <label>Continue or Terminate</label>
-        <locationX>578</locationX>
-        <locationY>638</locationY>
+        <name>Continue_Or_Terminate</name>
+        <label>Continue Or Terminate</label>
+        <locationX>1964</locationX>
+        <locationY>398</locationY>
         <defaultConnectorLabel>Terminate</defaultConnectorLabel>
         <rules>
             <name>Continue</name>
@@ -44,32 +59,58 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Product_Details</targetReference>
+                <targetReference>Product_Details_Screen</targetReference>
             </connector>
             <label>Continue</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>radio_check</name>
+        <label>radio check</label>
+        <locationX>1238</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Existing_Opportunity</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>selectedRadioOption</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>option1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Related_Opportunity_Screen</targetReference>
+            </connector>
+            <label>Existing Opportunity</label>
+        </rules>
+        <rules>
+            <name>New_opportunity</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>selectedRadioOption</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>option2</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Related_Opportunity_Screen_0</targetReference>
+            </connector>
+            <label>New opportunity</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
-        <name>LocationOf_Provider</name>
-        <dataType>String</dataType>
-        <displayField>LocationId</displayField>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>AccountId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>outputAccountRecordId</elementReference>
-            </value>
-        </filters>
-        <object>ProductFulfillmentLocation</object>
-        <outputAssignments>
-            <assignToReference>loc_picklist</assignToReference>
-            <field>LocationId</field>
-        </outputAssignments>
-        <valueField>LocationId</valueField>
+        <name>StageName</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>StageName</picklistField>
+        <picklistObject>Opportunity</picklistObject>
     </dynamicChoiceSets>
-    <interviewLabel>Loan Request {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Loan Request</label>
+    <interviewLabel>New Trial Request {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>New Trial Request</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -92,8 +133,8 @@
     <recordCreates>
         <name>Authorization_Form</name>
         <label>Authorization Form</label>
-        <locationX>578</locationX>
-        <locationY>278</locationY>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
         <assignRecordIdToReference>authFormId</assignRecordIdToReference>
         <connector>
             <targetReference>Create_Authorization_Form_Text</targetReference>
@@ -105,7 +146,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Loan Device Request</stringValue>
+                <stringValue>Trial Device Request</stringValue>
             </value>
         </inputAssignments>
         <object>AuthorizationForm</object>
@@ -113,11 +154,11 @@
     <recordCreates>
         <name>Create_Authorization_Form_Text</name>
         <label>Create Authorization Form Text</label>
-        <locationX>578</locationX>
-        <locationY>398</locationY>
+        <locationX>50</locationX>
+        <locationY>1118</locationY>
         <assignRecordIdToReference>authFormText</assignRecordIdToReference>
         <connector>
-            <targetReference>Provider_Details</targetReference>
+            <targetReference>Create_Authorization_From_Consent</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -138,13 +179,13 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Loan Device Request</stringValue>
+                <stringValue>Trial Device Request</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>SummaryAuthFormText</field>
             <value>
-                <stringValue>Loan Device Request</stringValue>
+                <stringValue>Trial Device Request</stringValue>
             </value>
         </inputAssignments>
         <object>AuthorizationFormText</object>
@@ -153,10 +194,10 @@
         <name>Create_Authorization_From_Consent</name>
         <label>Create Authorization From Consent</label>
         <locationX>50</locationX>
-        <locationY>878</locationY>
-        <assignRecordIdToReference>authoFormConsentId</assignRecordIdToReference>
+        <locationY>1238</locationY>
+        <assignRecordIdToReference>authorFormConsentId</assignRecordIdToReference>
         <connector>
-            <targetReference>Request_Summary</targetReference>
+            <targetReference>esignature_screen</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -177,27 +218,80 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Loan Device Request</stringValue>
+                <stringValue>Trial Device Request</stringValue>
             </value>
         </inputAssignments>
         <object>AuthorizationFormConsent</object>
     </recordCreates>
     <recordCreates>
-        <name>Create_Loan_Case</name>
-        <label>Create Loan Case</label>
-        <locationX>50</locationX>
-        <locationY>1238</locationY>
-        <assignRecordIdToReference>caseId</assignRecordIdToReference>
+        <name>Create_Opportunity</name>
+        <label>Create Opportunity</label>
+        <locationX>1898</locationX>
+        <locationY>998</locationY>
+        <assignRecordIdToReference>oppId</assignRecordIdToReference>
         <connector>
-            <targetReference>Case_Creation_Toast</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Authorization_Form</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Fault_Screen</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>AccountId</field>
             <value>
-                <elementReference>outputAccountRecordId</elementReference>
+                <elementReference>OppAccount.recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Amount</field>
+            <value>
+                <elementReference>Amount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CloseDate</field>
+            <value>
+                <elementReference>Closed_Date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>Description</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Opportunity_Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <elementReference>Stage</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Trial_Cases</name>
+        <label>Create Trial Cases</label>
+        <locationX>50</locationX>
+        <locationY>1478</locationY>
+        <assignRecordIdToReference>CaseId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Update_Oppportunity</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>outputaccountRecordId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -209,19 +303,19 @@
         <inputAssignments>
             <field>Description</field>
             <value>
-                <stringValue>Loan Device Request - {!outputProductName}</stringValue>
+                <stringValue>Trial Device Request - {!outputProductRecordName}</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>From_Date__c</field>
             <value>
-                <elementReference>outPutFromDate</elementReference>
+                <elementReference>ouptutFromdate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Location__c</field>
             <value>
-                <elementReference>relatedLocId</elementReference>
+                <elementReference>relatedLocationId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -245,7 +339,7 @@
         <inputAssignments>
             <field>ProductId</field>
             <value>
-                <elementReference>outputProductId</elementReference>
+                <elementReference>outputProductRecordId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -257,7 +351,7 @@
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>mdRecordTypeId</elementReference>
+                <elementReference>MDRecordTypeId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -269,31 +363,31 @@
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <stringValue>Loan Device Request - {!outputProductName}</stringValue>
+                <stringValue>Trial Device Request - {!outputProductRecordName}.</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>To_Date__c</field>
             <value>
-                <elementReference>outputToDate</elementReference>
+                <elementReference>outPutToDate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Type</field>
             <value>
-                <stringValue>Loan Device Request</stringValue>
+                <stringValue>Trial Device Request</stringValue>
             </value>
         </inputAssignments>
         <object>Case</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_RecordType</name>
-        <label>Get RecordType</label>
-        <locationX>578</locationX>
+        <name>GetRecordTypeId</name>
+        <label>GetRecordTypeId</label>
+        <locationX>1964</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Authorization_Form</targetReference>
+            <targetReference>Provider_Details_Screen</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -305,29 +399,63 @@
         </filters>
         <object>RecordType</object>
         <outputAssignments>
-            <assignToReference>mdRecordTypeId</assignToReference>
+            <assignToReference>MDRecordTypeId</assignToReference>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
-    <screens>
-        <name>Esignature_Screen</name>
-        <label>Esignature Screen</label>
+    <recordUpdates>
+        <name>Update_Oppportunity</name>
+        <label>Update Oppportunity</label>
         <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationY>1598</locationY>
+        <connector>
+            <targetReference>show_Toast</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>oppId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CaseId__c</field>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <screens>
+        <name>esignature_screen</name>
+        <label>esignature screen</label>
+        <locationX>50</locationX>
+        <locationY>1358</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Create_Loan_Case</targetReference>
+            <targetReference>Create_Trial_Cases</targetReference>
         </connector>
         <fields>
-            <name>esignature</name>
+            <name>esignatureCmp</name>
             <extensionName>c:eSignature</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>authFormId</name>
                 <value>
-                    <elementReference>authoFormConsentId</elementReference>
+                    <elementReference>authorFormConsentId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>contactName</name>
+                <value>
+                    <elementReference>relatedContactName</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -343,15 +471,9 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>contactName</name>
-                <value>
-                    <elementReference>relatedContactName</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>deviceTypeName</name>
                 <value>
-                    <stringValue>Loan</stringValue>
+                    <stringValue>Trial</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -370,8 +492,8 @@
     <screens>
         <name>Fault_Screen</name>
         <label>Fault Screen</label>
-        <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationX>314</locationX>
+        <locationY>1838</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -384,44 +506,26 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Product_Details</name>
-        <label>Product Details</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
+        <name>Product_Details_Screen</name>
+        <label>Product Details Screen</label>
+        <locationX>1238</locationX>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Back</backButtonLabel>
         <connector>
-            <targetReference>Create_Authorization_From_Consent</targetReference>
+            <targetReference>Request_Summary_Screen</targetReference>
         </connector>
         <fields>
-            <name>Productdetailstext</name>
+            <name>ProductDetailsHeaderText</name>
             <fieldText>&lt;p&gt;&lt;b&gt;Capture Product Details&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ProductDetails</name>
+            <name>productDetails</name>
             <extensionName>c:captureRequestProductDetails</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>fieldLabel</name>
-                <value>
-                    <stringValue>Product</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>productId</name>
-                <value>
-                    <elementReference>outputProductId</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>productName</name>
-                <value>
-                    <elementReference>outputProductName</elementReference>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>durationName</name>
                 <value>
@@ -435,9 +539,27 @@
                 </value>
             </inputParameters>
             <inputParameters>
+                <name>productId</name>
+                <value>
+                    <elementReference>outputProductRecordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fieldLabel</name>
+                <value>
+                    <stringValue>Product</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
                 <name>fromDate</name>
                 <value>
-                    <elementReference>outPutFromDate</elementReference>
+                    <elementReference>ouptutFromdate</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>productName</name>
+                <value>
+                    <elementReference>outputProductRecordName</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -449,29 +571,29 @@
             <inputParameters>
                 <name>toDate</name>
                 <value>
-                    <elementReference>outputToDate</elementReference>
+                    <elementReference>outPutToDate</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>outPutFromDate</assignToReference>
-                <name>fromDate</name>
-            </outputParameters>
-            <outputParameters>
-                <assignToReference>outputProductId</assignToReference>
+                <assignToReference>outputProductRecordId</assignToReference>
                 <name>productId</name>
             </outputParameters>
             <outputParameters>
-                <assignToReference>outputProductName</assignToReference>
+                <assignToReference>outputProductRecordName</assignToReference>
                 <name>productName</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>ouptutFromdate</assignToReference>
+                <name>fromDate</name>
             </outputParameters>
             <outputParameters>
                 <assignToReference>outputProductQuantity</assignToReference>
                 <name>quantValue</name>
             </outputParameters>
             <outputParameters>
-                <assignToReference>outputToDate</assignToReference>
+                <assignToReference>outPutToDate</assignToReference>
                 <name>toDate</name>
             </outputParameters>
         </fields>
@@ -479,30 +601,30 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Provider_Details</name>
-        <label>Provider Details</label>
-        <locationX>578</locationX>
-        <locationY>518</locationY>
+        <name>Provider_Details_Screen</name>
+        <label>Provider Details Screen</label>
+        <locationX>1964</locationX>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Back</backButtonLabel>
         <connector>
-            <targetReference>Continue_or_Terminate</targetReference>
+            <targetReference>Continue_Or_Terminate</targetReference>
         </connector>
         <fields>
-            <name>CaptureText</name>
+            <name>captureText</name>
             <fieldText>&lt;p&gt;&lt;b&gt;Capture Request Details&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ProviderLoc</name>
+            <name>LocationofProvider</name>
             <extensionName>c:relatedPicklistOptions</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>accountId</name>
                 <value>
-                    <elementReference>outputAccountRecordId</elementReference>
+                    <elementReference>outputaccountRecordId</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -532,13 +654,13 @@
             <inputParameters>
                 <name>locationId</name>
                 <value>
-                    <elementReference>relatedLocId</elementReference>
+                    <elementReference>relatedLocationId</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>locationName</name>
                 <value>
-                    <elementReference>relatedLocationName</elementReference>
+                    <elementReference>realtedLocationName</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -595,7 +717,7 @@
                     <stringValue>Select Contact...</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>relatedContactId</assignToReference>
@@ -606,15 +728,15 @@
                 <name>contactName</name>
             </outputParameters>
             <outputParameters>
-                <assignToReference>relatedLocId</assignToReference>
+                <assignToReference>relatedLocationId</assignToReference>
                 <name>locationId</name>
             </outputParameters>
             <outputParameters>
-                <assignToReference>relatedLocationName</assignToReference>
+                <assignToReference>realtedLocationName</assignToReference>
                 <name>locationName</name>
             </outputParameters>
             <outputParameters>
-                <assignToReference>outputAccountRecordId</assignToReference>
+                <assignToReference>outputaccountRecordId</assignToReference>
                 <name>accountId</name>
             </outputParameters>
             <outputParameters>
@@ -630,19 +752,204 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Request_Summary</name>
-        <label>Request Summary</label>
+        <name>Related_Opportunity_Screen</name>
+        <label>Related Opportunity Screen</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>878</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Authorization_Form</targetReference>
+        </connector>
+        <fields>
+            <name>captureSummaryDetails</name>
+            <extensionName>c:captureSummaryDetails</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Link to an existing opportunity.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>DisplaySpaceCmp</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>RelatedOpportunityCmp</name>
+            <extensionName>c:opportunitiesListCMP</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>accountId</name>
+                <value>
+                    <elementReference>outputaccountRecordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>selectedRadioOption</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>oppId</assignToReference>
+                <name>fieldValue</name>
+            </outputParameters>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Related_Opportunity_Screen_0</name>
+        <label>Related Opportunity Screen</label>
+        <locationX>1898</locationX>
+        <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <backButtonLabel>Back</backButtonLabel>
         <connector>
-            <targetReference>Esignature_Screen</targetReference>
+            <targetReference>Create_Opportunity</targetReference>
         </connector>
         <fields>
-            <name>captureSummary</name>
+            <name>captureSummaryDetails_0</name>
+            <extensionName>c:captureSummaryDetails</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>message</name>
+                <value>
+                    <stringValue>Link to a New opportunity.</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>DisplaySpaceCmp_0</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>RelatedOpportunityCmp_0</name>
+            <extensionName>c:opportunitiesListCMP</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>accountId</name>
+                <value>
+                    <elementReference>outputaccountRecordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>selectedRadioOption</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>OppAccount</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>fieldApiName</name>
+                <value>
+                    <stringValue>AccountId</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Account Name</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>Opportunity</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>outputaccountRecordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Closed_Date</name>
+            <dataType>Date</dataType>
+            <fieldText>Closed Date</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Opportunity_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Opportunity Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Stage</name>
+            <choiceReferences>StageName</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>Prospecting</stringValue>
+            </defaultValue>
+            <fieldText>Stage</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Amount</name>
+            <dataType>Currency</dataType>
+            <fieldText>Amount</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <scale>0</scale>
+        </fields>
+        <fields>
+            <name>Description</name>
+            <fieldText>Description</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Request_Summary_Screen</name>
+        <label>Request Summary Screen</label>
+        <locationX>1238</locationX>
+        <locationY>638</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Back</backButtonLabel>
+        <connector>
+            <targetReference>radio_check</targetReference>
+        </connector>
+        <fields>
+            <name>CaptureSummaryHeader</name>
             <extensionName>c:captureSummaryDetails</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -656,30 +963,45 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>SummaryText</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Product: &lt;strong&gt;{!outputProductName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Qty Requested:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Loan Duration:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outPutFromDate} to {!outputToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Req: &lt;/span&gt;&lt;a href=&quot;/{!outputAccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedLocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Provider Req: &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!relatedContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <name>displaySpace</name>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Summary_Details</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Product&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;: &lt;/span&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;{!outputProductRecordName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Requested &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Quantity&lt;/span&gt;&lt;span style=&quot;color: rgb(118, 97, 97);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(189, 174, 174);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(21, 21, 21);&quot;&gt;{!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Duration&lt;/span&gt;&lt;span style=&quot;color: rgb(125, 108, 108);&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt;{!ouptutFromdate} to {!outPutToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 104, 104);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!outputaccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location&lt;/span&gt;&lt;span style=&quot;color: rgb(121, 103, 103);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocationId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(41, 101, 221);&quot;&gt;{!realtedLocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(127, 107, 107); background-color: rgb(255, 255, 255);&quot;&gt;﻿&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Provider&lt;/span&gt;&lt;span style=&quot;color: rgb(127, 107, 107); background-color: rgb(255, 255, 255);&quot;&gt;: &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!relatedContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(39, 99, 221); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>emptySpace</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>LinkOpportnityDisplayText</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Related opportunity&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>selectedRadioOption</name>
+            <choiceReferences>existingOpportunity</choiceReferences>
+            <choiceReferences>NewOpportunity</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>New or Existing Opportunity?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>452</locationX>
+        <locationX>1838</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_RecordType</targetReference>
+            <targetReference>GetRecordTypeId</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <variables>
-        <name>accId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>accRecId</name>
+        <name>accountRecordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -700,97 +1022,69 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>authoFormConsentId</name>
+        <name>authorFormConsentId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>CaseCreationMsg</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>The case is created successfully</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>caseId</name>
+        <name>CaseId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>contactId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>contactName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>inputAccRecId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>loc_picklist</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>locationId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>locationName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>mdRecordTypeId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>Order_Created_Msg</name>
+        <name>CaseSuccessMessage</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Order is created successfully</stringValue>
+            <stringValue>Case is created successfully.</stringValue>
         </value>
     </variables>
     <variables>
-        <name>OrderId</name>
+        <name>MDRecordTypeId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>outputAccountRecordId</name>
+        <name>oppId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>orderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>OrderSuccessMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Order is created successfully.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>ouptutFromdate</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>outputaccountRecordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -798,27 +1092,6 @@
     </variables>
     <variables>
         <name>outputAccountRecordName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>outPutFromDate</name>
-        <dataType>Date</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>outputProductId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>outputProductName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -833,14 +1106,35 @@
         <scale>0</scale>
     </variables>
     <variables>
-        <name>outputToDate</name>
+        <name>outputProductRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>outputProductRecordName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>outPutToDate</name>
         <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>productId</name>
+        <name>productRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>realtedLocationName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -861,14 +1155,7 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>relatedLocationName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>relatedLocId</name>
+        <name>relatedLocationId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
