@@ -29,13 +29,13 @@
                     </p>
                 </li>
                 <li>
-                    <p><span class="slds-text-title">{contactlabel}: </span><a data-name='Contact'
-                            data-id={caseDetail.ContactId} onclick={handleUrl}>{caseDetail.Contact}</a>
+                    <p><span class="slds-text-title">{locationlabel}: </span><a data-name='Location__c'
+                            data-id={caseDetail.LocationId} onclick={handleUrl}>{caseDetail.Location}</a>
                     </p>
                 </li>
                 <li>
-                    <p><span class="slds-text-title">{locationlabel}: </span><a data-name='Location__c'
-                            data-id={caseDetail.LocationId} onclick={handleUrl}>{caseDetail.Location}</a>
+                    <p><span class="slds-text-title">{contactlabel}: </span><a data-name='Contact'
+                            data-id={caseDetail.ContactId} onclick={handleUrl}>{caseDetail.Contact}</a>
                     </p>
                 </li>
             </ul>
@@ -47,7 +47,7 @@
     <template if:false={isProductDetails}>
     <lightning-card>
         <div class="slds-p-horizontal_small">
-            <strong>New Retrieval Details</strong>
+            <strong>Retrieval Details</strong>
                 <div class="slds-p-vertical_medium">
                     <lightning-input class="validate validateQuantity" label="Quantity" value={quantValue} onchange={handleChangeQuantity} type="number" placeholder="Enter Value" required></lightning-input>
                 </div>

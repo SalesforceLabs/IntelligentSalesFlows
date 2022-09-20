@@ -25,6 +25,7 @@ export default class ESignature extends LightningElement {
     @api isBackButtonEnabled = false;
     @api deviceTypeName;
     @api isterminateflow = false;
+    @api flowType;
     @track signatureonPopup = true;
     @track showPopupApp;
 
@@ -288,6 +289,18 @@ export default class ESignature extends LightningElement {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    get isRequestFlow() {
+        return this.flowType === 'request';
+    }
+
+    get isHandingoverFlow() {
+        return this.flowType === 'handingover';
+    }
+
+    get isRetrievalFlow() {
+        return this.flowType === 'retrieval';
     }
 
 }
