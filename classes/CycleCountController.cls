@@ -1,4 +1,4 @@
-public class CycleCountController {
+public with sharing class CycleCountController {
     @InvocableMethod(label='Get Serialized Products' description='Get Serialized Products with filters ProductId,LocationId and ScannedSerailNumbers' category='SerializedProduct')
     Public static List<Response> getLostProducts(List<Requests> rqstInputs){
         try{

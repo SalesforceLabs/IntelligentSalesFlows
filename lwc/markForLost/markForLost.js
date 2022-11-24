@@ -17,7 +17,6 @@ export default class MarkForLost extends LightningElement {
     @api LocationId;
 
     connectedCallback() {
-        console.log('rows', this.rows);
         if (this.selectedSerialNumbersIds) {
             let SerializedProductsIds = this.selectedSerialNumbersIds;//.split(';').map(item => item.trim());
             const results = this.SerializedProducts.filter(row => SerializedProductsIds.includes(row.Id));
@@ -33,7 +32,6 @@ export default class MarkForLost extends LightningElement {
                     this.rows.push(row);
                 }
             }
-            console.log('rows', this.rows);
         }
     }
 
@@ -105,7 +103,6 @@ export default class MarkForLost extends LightningElement {
     lookupRecord(event) {
         const target = event.detail;
         this.rows[target?.index][target?.name] = target?.selectedRecord?.Id;
-        console.log('test', this.rows);
 
     }
 }

@@ -521,7 +521,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Error_Screen</name>
@@ -588,6 +588,12 @@
                 <name>deviceTypeName</name>
                 <value>
                     <stringValue>Loan</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>flowType</name>
+                <value>
+                    <stringValue>retrieval</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -720,7 +726,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>2102</locationX>

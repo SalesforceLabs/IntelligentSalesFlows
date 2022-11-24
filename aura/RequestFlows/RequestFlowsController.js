@@ -3,7 +3,6 @@
         component.set("v.isFlow",true);
         component.set("v.flowLaunched",false);
         const flowDetails = event.getParam('flowDetails');
-        console.log(flowDetails);
         let flow = component.find("flowId");
         let inputVariables;
         if(flowDetails && flowDetails.caseId){

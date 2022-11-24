@@ -3,15 +3,14 @@
     <actionCalls>
         <name>Create_Case_Mapping</name>
         <label>Create Case Mapping</label>
-        <locationX>50</locationX>
-        <locationY>1598</locationY>
+        <locationX>51</locationX>
+        <locationY>1646</locationY>
         <actionName>HandoverSerilizedProductCase</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Create_Case_Mapping_records</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -47,15 +46,14 @@
     <actionCalls>
         <name>Product_Handover_Completed</name>
         <label>Product Handover Completed</label>
-        <locationX>50</locationX>
-        <locationY>1958</locationY>
+        <locationX>51</locationX>
+        <locationY>2006</locationY>
         <actionName>c:ShowToast</actionName>
         <actionType>component</actionType>
         <connector>
             <targetReference>Create_Trial_Return_Case</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -76,15 +74,14 @@
     <actionCalls>
         <name>Update_Product</name>
         <label>Update Product</label>
-        <locationX>50</locationX>
-        <locationY>1358</locationY>
+        <locationX>51</locationX>
+        <locationY>1406</locationY>
         <actionName>HandOverController</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Update_Serialized_Products</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -115,8 +112,8 @@
     <decisions>
         <name>Continue_or_Terminate</name>
         <label>Continue or Terminate?</label>
-        <locationX>1766</locationX>
-        <locationY>518</locationY>
+        <locationX>1767</locationX>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Terminate</defaultConnectorLabel>
         <rules>
             <name>Continue</name>
@@ -145,7 +142,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -158,14 +155,13 @@
     <recordCreates>
         <name>Create_Auth_Form_Consent</name>
         <label>Create Auth Form Consent</label>
-        <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationX>51</locationX>
+        <locationY>926</locationY>
         <assignRecordIdToReference>authFormConsentId</assignRecordIdToReference>
         <connector>
             <targetReference>Capture_Singnature</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -191,14 +187,13 @@
     <recordCreates>
         <name>Create_Authorisation_Form</name>
         <label>Create Authorisation Form</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationX>51</locationX>
+        <locationY>806</locationY>
         <assignRecordIdToReference>authFormTextId</assignRecordIdToReference>
         <connector>
             <targetReference>Create_Auth_Form_Consent</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -230,14 +225,13 @@
     <recordCreates>
         <name>Create_AuthorizationForm</name>
         <label>Create AuthorizationForm</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationX>51</locationX>
+        <locationY>686</locationY>
         <assignRecordIdToReference>authformId</assignRecordIdToReference>
         <connector>
             <targetReference>Create_Authorisation_Form</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -251,13 +245,12 @@
     <recordCreates>
         <name>Create_Case_Mapping_records</name>
         <label>Create Case Mapping records</label>
-        <locationX>50</locationX>
-        <locationY>1718</locationY>
+        <locationX>53</locationX>
+        <locationY>1742</locationY>
         <connector>
             <targetReference>Update_Case</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputReference>genCaseSerialNumbersList</inputReference>
@@ -265,14 +258,13 @@
     <recordCreates>
         <name>create_Order</name>
         <label>create Order</label>
-        <locationX>50</locationX>
-        <locationY>1238</locationY>
+        <locationX>51</locationX>
+        <locationY>1286</locationY>
         <assignRecordIdToReference>OrderId</assignRecordIdToReference>
         <connector>
             <targetReference>Update_Product</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -316,8 +308,8 @@
     <recordCreates>
         <name>Create_Trial_Return_Case</name>
         <label>Create Trial Return Case</label>
-        <locationX>50</locationX>
-        <locationY>2078</locationY>
+        <locationX>51</locationX>
+        <locationY>2126</locationY>
         <faultConnector>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
@@ -361,6 +353,12 @@
             <field>OwnerId</field>
             <value>
                 <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>CaseId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -423,14 +421,13 @@
     <recordLookups>
         <name>Case_Info</name>
         <label>Case Info</label>
-        <locationX>1766</locationX>
-        <locationY>278</locationY>
+        <locationX>1767</locationX>
+        <locationY>326</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Hand_Over_Screen</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -448,14 +445,13 @@
     <recordLookups>
         <name>Get_PriceBook</name>
         <label>Get PriceBook</label>
-        <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationX>51</locationX>
+        <locationY>1166</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>create_Order</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -480,8 +476,8 @@
     <recordLookups>
         <name>Get_Record_Type</name>
         <label>Get Record Type</label>
-        <locationX>1766</locationX>
-        <locationY>158</locationY>
+        <locationX>1767</locationX>
+        <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Case_Info</targetReference>
@@ -503,13 +499,12 @@
     <recordUpdates>
         <name>Update_Case</name>
         <label>Update Case</label>
-        <locationX>50</locationX>
-        <locationY>1838</locationY>
+        <locationX>51</locationX>
+        <locationY>1886</locationY>
         <connector>
             <targetReference>Product_Handover_Completed</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -531,13 +526,12 @@
     <recordUpdates>
         <name>Update_Serialized_Products</name>
         <label>Update Serialized Products</label>
-        <locationX>50</locationX>
-        <locationY>1478</locationY>
+        <locationX>51</locationX>
+        <locationY>1526</locationY>
         <connector>
             <targetReference>Create_Case_Mapping</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Order_Error_Message</targetReference>
         </faultConnector>
         <inputReference>serializedProductsList</inputReference>
@@ -546,7 +540,7 @@
         <name>Capture_Singnature</name>
         <label>Capture Singnature</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1031</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -566,7 +560,7 @@
             <inputParameters>
                 <name>contactName</name>
                 <value>
-                    <elementReference>Case_Info.Contact.LastName</elementReference>
+                    <elementReference>contactName</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -587,6 +581,12 @@
                     <stringValue>Trial</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>flowType</name>
+                <value>
+                    <stringValue>handingover</stringValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -597,8 +597,8 @@
     <screens>
         <name>Hand_Over_Screen</name>
         <label>Hand Over Screen</label>
-        <locationX>1766</locationX>
-        <locationY>398</locationY>
+        <locationX>1767</locationX>
+        <locationY>446</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -672,7 +672,7 @@
             <inputParameters>
                 <name>handoverProductHeader</name>
                 <value>
-                    <stringValue>Trial Devices</stringValue>
+                    <stringValue>Trial Device(s)</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -693,6 +693,10 @@
                 <assignToReference>handedoverQuantity</assignToReference>
                 <name>serialNumbersLength</name>
             </outputParameters>
+            <outputParameters>
+                <assignToReference>contactName</assignToReference>
+                <name>contactName</name>
+            </outputParameters>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>true</showHeader>
@@ -700,8 +704,8 @@
     <screens>
         <name>Order_Error_Message</name>
         <label>Order_Error_Message</label>
-        <locationX>314</locationX>
-        <locationY>2198</locationY>
+        <locationX>315</locationX>
+        <locationY>2246</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -714,8 +718,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>1640</locationX>
-        <locationY>0</locationY>
+        <locationX>1641</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Get_Record_Type</targetReference>
         </connector>
@@ -748,6 +752,13 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>contactName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>genCaseSerialNumbersList</name>

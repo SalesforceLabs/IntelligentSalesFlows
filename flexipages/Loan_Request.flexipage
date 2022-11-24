@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>approvedTitleHeaderName</name>
+                    <value>Approved Requests</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>caseStatus</name>
+                    <value>In Review</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>caseType</name>
+                    <value>Loan Device Request</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>handOverFlowName</name>
+                    <value>Handover_Loan</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>listviewDuration</name>
+                    <value>Loan Duration</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>listviewQuantity</name>
+                    <value>Requested Qty</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>newButtonName</name>
+                    <value>New</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>newflowName</name>
+                    <value>Loan_Request</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>openTitleheaderName</name>
+                    <value>Open Requests</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showRequestedListViews</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Loan Requests</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>viewLists</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>RequestFlows</componentName>
+                <identifier>c_RequestFlows1</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Loan Request</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

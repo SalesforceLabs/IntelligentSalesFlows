@@ -354,6 +354,12 @@
                     <stringValue>Loan</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>flowType</name>
+                <value>
+                    <stringValue>request</stringValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -470,7 +476,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Provider_Details</name>
@@ -621,7 +627,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Request_Summary</name>
@@ -645,23 +651,17 @@
                     <stringValue>Does this look all right to you?</stringValue>
                 </value>
             </inputParameters>
-            <inputParameters>
-                <name>title</name>
-                <value>
-                    <stringValue>Loan Request</stringValue>
-                </value>
-            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
             <name>SummaryText</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!outputProductName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Qty Requested:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Loan Duration:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outPutFromDate} to {!outputToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Req: &lt;/span&gt;&lt;a href=&quot;/{!outputAccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Provider Req: &lt;/span&gt;&lt;a href=&quot;/{!relatedContactId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedLocationName}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Product: &lt;strong&gt;{!outputProductName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Qty Requested:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outputProductQuantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Loan Duration:&lt;/span&gt;&lt;span style=&quot;color: rgb(11, 11, 11);&quot;&gt; {!outPutFromDate} to {!outputToDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Req: &lt;/span&gt;&lt;a href=&quot;/{!outputAccountRecordId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234);&quot;&gt;{!outputAccountRecordName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Account Location: &lt;/span&gt;&lt;a href=&quot;/{!relatedLocId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedLocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Provider Req: &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!relatedContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(10, 81, 234); background-color: rgb(255, 255, 255);&quot;&gt;{!relatedContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>452</locationX>

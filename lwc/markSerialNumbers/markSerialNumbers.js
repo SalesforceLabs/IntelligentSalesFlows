@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { FlowNavigationNextEvent } from 'lightning/flowSupport';
+import { FlowNavigationNextEvent, FlowNavigationBackEvent } from 'lightning/flowSupport';
 
 export default class markSerialNumbers extends LightningElement {
     @api availableActions = [];
@@ -48,7 +48,6 @@ export default class markSerialNumbers extends LightningElement {
     }
 
     handleNext() {
-        this.terminate = false;
         if (this.availableActions.find((action) => action === 'NEXT')) {
             // navigate to the next screen
             const navigatenNextEvent = new FlowNavigationNextEvent();
@@ -58,9 +57,11 @@ export default class markSerialNumbers extends LightningElement {
 
     handleCancel() {
         this.terminate = true;
-        if (this.availableActions.find((action) => action === 'NEXT')) {
+        const navigatenNextEvent = new FlowNavigationBackEvent();
+            this.dispatchEvent(navigatenNextEvent);
+        if (this.availableActions.find((action) => action === 'BACK')) {
             // navigate to the next screen
-            const navigatenNextEvent = new FlowNavigationNextEvent();
+            const navigatenNextEvent = new FlowNavigationBackEvent();
             this.dispatchEvent(navigatenNextEvent);
         }
     }

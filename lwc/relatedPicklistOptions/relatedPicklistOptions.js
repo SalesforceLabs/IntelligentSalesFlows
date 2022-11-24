@@ -40,10 +40,8 @@ export default class RelatedPicklistOptions extends LightningElement {
             for (var i = 0; i < this.LocationList.length; i++) {
                 options.push({ label: this.LocationList[i].Name, value: this.LocationList[i].Id });
             }
-            console.log(data);
         } else if (error) {
             options.push({ label: '--None--', value: '' });
-            console.log(error);
         }
         this.relatedLocationOptions = options;
     }
@@ -71,7 +69,9 @@ export default class RelatedPicklistOptions extends LightningElement {
     }
 
     handleGoNext() {
-        console.log(this)
+        this.template.querySelectorAll('lightning-combobox').forEach(element => {
+            element.reportValidity();
+        });
         if (this.contactId && this.accountId && this.locationId) {
             // check if NEXT is allowed on this screen
             if (this.availableActions.find((action) => action === 'NEXT')) {
