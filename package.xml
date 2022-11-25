@@ -11,6 +11,7 @@
         <members>MedicalDeviceRequestController</members>
         <members>PatientRegistrationController</members>
         <members>LookupController</members>
+        <members>MarkForOrderController</members>
         <name>ApexClass</name>
     </types>
     <types>
