@@ -114,7 +114,6 @@
         <members>customLookupSearchChildCmp</members>
         <members>patientRegistration</members>
         <members>customLookupSearchCmp</members>
-        <members>markAsTransferred</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
