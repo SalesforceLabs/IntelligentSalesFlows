@@ -10,6 +10,7 @@
         <members>HandOverControllerTest</members>
         <members>MedicalDeviceRequestController</members>
         <members>PatientRegistrationController</members>
+        <members>LookupController</members>
         <name>ApexClass</name>
     </types>
     <types>
