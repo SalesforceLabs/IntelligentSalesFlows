@@ -1,0 +1,99 @@
+<template>
+    <Strong>Select a Transfer Request</Strong><br><br>
+    <ul class="list">
+        <template for:each={productList} for:item="row">
+            <li key={row.Id} class=" slds-p-horizontal_small  slds-p-vertical_small">
+                <dl>
+                    <lightning-layout>
+                        <lightning-layout-item>
+                            <lightning-input key={row.Id} data-value={row.Id} type="radio" name="radio" value={row}
+                                onchange={handleRadioChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item><strong>{row.ProductName}</strong>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <div style="padding-left: 32px;">
+                        <dt class="md-colon">
+                            Request from &nbsp;
+                        </dt>
+                        <dd>:{row.ReceivedByName}</dd>
+                    </div>
+                    <div style="padding-left: 32px;">
+                        <dt class="md-colon">
+                            Quantity : &nbsp;
+                        </dt>
+                        <dd>{row.QuantityReceived}</dd>
+                    </div>
+                    <div style="padding-left: 32px;">
+                        <dt class="md-colon">
+                            Location : &nbsp;
+                        </dt>
+                        <dd>{row.LocationName}</dd>
+                    </div>
+                    <div style="padding-left: 32px;">
+                        <dt class="md-colon">
+                            Requested Date : &nbsp;
+                        </dt>
+                        <dd>{row.crtDate}</dd>
+                    </div>
+                </dl>
+            </li>
+        </template><br>
+        <!--<lightning-button class="slds-align_absolute-center" label="Load More.." onclick={handleLoadMore}></lightning-button>-->
+    </ul>
+    <template if:true={showPopupApp}>
+        <!-- Modal/Popup Box LWC starts here slds-text-body_small slds-m-left_small -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h3 id="modal-heading-03" class="slds-modal__title slds-hyphenate slds-modal-p-around_small">
+                        {popUpHeader}</h3>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_small" id="modal-content-id-12">
+                    <div class="mob-spread">
+                        <div>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <div class='ban'>
+                                        <strong style='font-size: medium;'>{popupBodyHeaderAssign}</strong><br>
+                                        <p style="margin-left: 10px;padding-bottom: 5px;">{popupBodyAssign}</p>
+                                        <!--<strong style='font-size: medium;'>{label.bannerMsgHeader}</strong> <br>-->
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}
+                        title={popupButtonLabel}>{popupButtonLabel}</button>
+                    <button class="slds-button slds-button_brand" onclick={handleUpdate} title="Confirm">
+                        {saveButtonLabel}</button>
+
+
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <div class="slds-clearfix slds-p-vertical_small">
+        <div class="slds-float_left">
+            <lightning-button variant="Neutral" label="Back" title="Previous" onclick={handlePrevious}>
+            </lightning-button>
+        </div>
+        <div class="slds-float_right">
+            <lightning-button variant="brand" label="Done" title="Next" onclick={handleNext}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

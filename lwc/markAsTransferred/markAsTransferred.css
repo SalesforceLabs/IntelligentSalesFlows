@@ -1,0 +1,13 @@
+dt, dd{
+    display: inline-block;
+    vertical-align: middle;
+    margin:0;
+}
+dt{
+    word-wrap: break-word;
+    color: #444444;
+}
+dd{
+    word-wrap: break-word;
+    color: #24385E;
+}
