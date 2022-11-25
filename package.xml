@@ -12,6 +12,7 @@
         <members>PatientRegistrationController</members>
         <members>LookupController</members>
         <members>MarkForOrderController</members>
+        <members>MarkForOrderControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
