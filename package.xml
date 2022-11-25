@@ -9,6 +9,7 @@
         <members>CycleCountControllerTest</members>
         <members>HandOverControllerTest</members>
         <members>MedicalDeviceRequestController</members>
+        <members>PatientRegistrationController</members>
         <name>ApexClass</name>
     </types>
     <types>
