@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Sample</fullName>
+        <default>false</default>
+        <label>Sample</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Trial</fullName>
+        <default>false</default>
+        <label>Trial</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Loan</fullName>
+        <default>false</default>
+        <label>Loan</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Mark for Order</fullName>
+        <default>false</default>
+        <label>Mark for Order</label>
+    </standardValue>
+</StandardValueSet>

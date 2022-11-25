@@ -11,6 +11,7 @@
             <property name="selectedSerialNumberIds" label="Selected Serial Numbers Ids" type="String[]" />
             <property name="selectedSerialNumbers" label="Selected Serial Numbers" type="String[]"/>
             <property name="title" label="Title" type="String" role="inputOnly"/>
+            <property name="availableActions" label="Actions" type="String[]" role="inputOnly"/>
             <property name="terminate" label="Terminate" type="boolean" role="outputOnly"/>
       </targetConfig>
     </targetConfigs>

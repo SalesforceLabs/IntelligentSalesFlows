@@ -31,7 +31,6 @@ export default class PatientRegistration extends LightningElement {
 
     get recordTypeId() {
         // Returns a map of record type Ids 
-        console.log(JSON.stringify(this.objectInfo.data))
         const rtis = this.objectInfo.data.recordTypeInfos;
         return Object.keys(rtis).find(rti => rtis[rti].name === 'Person Account');
     }
@@ -139,9 +138,7 @@ export default class PatientRegistration extends LightningElement {
         }
     }
     handleSuccess(event) {
-        console.log(event.detail)
         const payload = event.detail;
-        console.log(JSON.stringify(payload));
     }
     
 }

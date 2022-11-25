@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Problem</fullName>
+        <default>false</default>
+        <label>Problem</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Feature Request</fullName>
+        <default>false</default>
+        <label>Feature Request</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Question</fullName>
+        <default>false</default>
+        <label>Question</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Sample Device Request</fullName>
+        <default>false</default>
+        <label>Sample Device Request</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Loan Device Request</fullName>
+        <default>false</default>
+        <label>Loan Device Request</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Trial Device Request</fullName>
+        <default>false</default>
+        <label>Trial Device Request</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Loan Device Return</fullName>
+        <default>false</default>
+        <label>Loan Device Return</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Trial Device Return</fullName>
+        <default>false</default>
+        <label>Trial Device Return</label>
+    </standardValue>
+</StandardValueSet>

@@ -301,7 +301,7 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Esignature</name>
@@ -343,12 +343,18 @@
                     <elementReference>ContactName</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>flowType</name>
+                <value>
+                    <stringValue>request</stringValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Product_Details</name>
@@ -433,7 +439,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Request_Details</name>
@@ -584,7 +590,7 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Summary_Details</name>
@@ -609,12 +615,6 @@
                     <extensionName>c:captureSummaryDetails</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
-                        <name>title</name>
-                        <value>
-                            <stringValue>Sample Request</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
                         <name>message</name>
                         <value>
                             <stringValue>Does this look all right to you?</stringValue>
@@ -636,11 +636,11 @@
         </fields>
         <fields>
             <name>Summary_Detail</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!ProductName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Sample &lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Quantity&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt; Requested :  {!Quantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Requested Date :  {!RequestedDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Account Req :  &lt;a href=&quot;/{!AccountId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!AccountName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Provider Req :  &lt;a href=&quot;/{!ContactId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!ContactName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Account Location:  &lt;a href=&quot;/{!LocationId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!LocationName}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Request Summary&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Product :&lt;strong&gt; {!ProductName}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Sample &lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Quantity&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt; Requested :  {!Quantity}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Requested Date :  {!RequestedDate}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Account Req :  &lt;a href=&quot;/{!AccountId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!AccountName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Account Location:  &lt;a href=&quot;/{!LocationId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!LocationName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Provider Req :  &lt;/span&gt;&lt;a href=&quot;https://medtech2.lightning.force.com/%7B!ContactId%7D&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;{!ContactName}&lt;/a&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>848</locationX>

@@ -118,10 +118,8 @@ export default class MarkAsReturn extends NavigationMixin(LightningElement) {
                 this.options.push({ label: data[i].Name, value: data[i].Id });
             }
             this.error = undefined;
-            console.log(this.options)
         } else if (error) {
             this.options.push({ label: '--None--', value: '' });
-            console.log(error)
             this.error = error;
             this.options = undefined;
         }
@@ -156,8 +154,6 @@ export default class MarkAsReturn extends NavigationMixin(LightningElement) {
 
         const recordId = event.target.dataset.id;
         const objectApiName = event.target.dataset.name;
-        console.log(recordId);
-        console.log(objectApiName);
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {

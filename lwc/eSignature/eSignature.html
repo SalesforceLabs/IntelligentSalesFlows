@@ -8,8 +8,15 @@
       </div>
       <div>
         <div class="slds-p-bottom_x-large slds-p-top_small font-color acknowledgement">
-          By signing this request, I hereby certify that:<br><br>
-          (1) I am authorized to act on behalf of <Strong>{contactName}</Strong>;(2) The information contained in this request (including any medical necessity information, if applicable) is true, accurate and complete, to the best of my knowledge; and (3) The {deviceTypeName} device(s) or equipment transferred in this request are being ordered directly for <Strong>{contactName} </Strong> solely for use in their medical practice.      
+          <template if:true={isRequestFlow}>
+            I {contactName} hereby accept that the informatiomn contained in this request is true, complete, and accurate to the best of my knowledge.
+          </template>
+          <template if:true={isHandingoverFlow}>
+            I {contactName} hereby accept that I have received the product/s with the quanity and serial number as mentioned.
+          </template>
+          <template if:true={isRetrievalFlow}>
+            I {contactName} hereby declare that I have returned the product/s with the quanity and serial number as mentioned.
+          </template>  
         </div>
         <div class="slds-grid slds-gutters">
           <div class="slds-col slds-size_1-of-3 slds-m-bottom_x-small slds-align-bottom canvas-header">

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="iconName" label="Enter Icon Name" type="String" role="inputOnly"/>
+            <property name="objectApiName" label="Enter Object Api Name" type="String"  role="inputOnly"/>
+            <property name="fieldLabel" label="Enter Field Label" type="String"  role="inputOnly"/>
+            <property name="placeHolder" label="Enter Place Holder" type="String"  role="inputOnly"/>
+            <property name="defaultRecordId" label="Default Record Id" type="String" /> 
+            <property name="recordIdValue" label="Output Record Id" type="String"  role="outputOnly"/>
+            <property name="recordNameValue" label="Output Record Name" type="String"  role="outputOnly"/>                        
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

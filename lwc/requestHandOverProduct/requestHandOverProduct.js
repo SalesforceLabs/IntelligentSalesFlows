@@ -33,6 +33,7 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     @api serialNumbersLength = 0;
     @api handoverDetailsHeader;
     @api handoverProductHeader;
+    @api contactName;
     @track allSerlializedProducts = [];
     @track rows = [];
     @track LocationList;
@@ -49,6 +50,7 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
             this.caseDetail = {};
             this.caseDetail['Account'] = getFieldValue(data, ACCOUNT_FIELD);
             this.caseDetail['Contact'] = getFieldValue(data, CONTACT_FIELD);
+            this.contactName = getFieldValue(data, CONTACT_FIELD);
             this.caseDetail['Quantity'] = getFieldValue(data, QTY_FIELD);
             this.caseDetail['Location'] = getFieldValue(data, LOCATION_FIELD);
             this.caseDetail['Product'] = getFieldValue(data, PRODUCT_FIELD);
@@ -68,7 +70,6 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
                     this.rows.push({ serialNumber: '' });
                 }
             }
-            console.log('log&&&')
         } else if (error) {
             this.error = error;
             this.isLoaded = false;
@@ -97,7 +98,6 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
             for (var i = 0; i < this.LocationList.length; i++) {
                 this.options.push({ label: this.LocationList[i].Name, value: this.LocationList[i].Id });
             }
-            console.log(data);
         }
         else {
             this.error = undefined;
@@ -107,7 +107,6 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     @wire(getSerilizedProducts, { productId: '$caseDetail.ProductId', locationId: '$productLocation' })
     wiredSerilizedProducts({ data, error }) {
         if (data) {
-            console.log(data)
             this.allSerlializedProducts = data;
             this.error = undefined;
         } else if (error) {
@@ -132,8 +131,9 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
             enteredValue.setCustomValidity('');
 
         enteredValue.reportValidity();
-
-        this.rows[index].serialNumber = enteredSerialNumber;
+        if(this.allSerlializedProducts.includes(enteredSerialNumber)){
+            this.rows[index].serialNumber = enteredSerialNumber;
+        }
     }
 
 
@@ -145,8 +145,6 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
 
         const recordId = event.target.dataset.id;
         const objectApiName = event.target.dataset.name;
-        console.log(recordId);
-        console.log(objectApiName);
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {

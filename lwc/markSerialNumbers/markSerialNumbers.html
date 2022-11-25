@@ -2,7 +2,7 @@
     <div class="c-container">
         <lightning-layout multiple-rows>
             <lightning-layout-item size="12" class="slds-p-top_xx-small slds-p-bottom_xx-small">
-                <p class="slds-align_absolute-center slds-text-heading_small slds-p-bottom_small">{title}</p>
+                <p class="slds-align_absolute-center slds-text-heading_small slds-p-bottom_small"><b>{title}</b></p>
                 <p>
                     You have {serialNumbersCount} products missing from your inventory. Select the serial numbers for those products from this list.
                     <!--There are {serialNumbersCount} Products untracked from your Trunk. Which do you think from these
@@ -16,11 +16,11 @@
         </lightning-layout>
     </div>
     <div class="slds-clearfix slds-p-vertical_small">
-        <div class="slds-float_left">
+        <!-- div class="slds-float_left">
             <lightning-button variant="Neutral" label="Cancel" title="Previous" onclick={handleCancel}
                 >
             </lightning-button>
-        </div>
+        </div -->
         <div class="slds-float_right">
             <lightning-button variant="brand" label="Next" title="Next" onclick={handleNext}
                 class="slds-m-left_x-small">

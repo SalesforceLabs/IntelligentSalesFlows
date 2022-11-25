@@ -53,7 +53,6 @@ export default class Lookup extends LightningElement {
         }
         else if (error) {
             this.isSearchLoading = false;
-            console.log('(error---> ' + JSON.stringify(error));
         }
     };
 

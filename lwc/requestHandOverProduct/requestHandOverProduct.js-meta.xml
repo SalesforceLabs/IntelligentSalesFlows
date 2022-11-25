@@ -13,6 +13,7 @@
             <property name="contactlabel" label="Contact Label" type="String" />
             <property name="locationlabel" label="Location Label" type="String" />
             <property name="quantitylabel" label="Quantity Label" type="String" />
+            <property name="contactName" label="Contact Name" type="String" role="outputOnly"/>
             <property name="handoverDetailsHeader" label="Handover Details Header" type="String" role="inputOnly"/>
             <property name="handoverProductHeader" label="Handover Products Header" type="String" role="inputOnly" />
             <property name="datelabel" label="Date Label" type="String"/>

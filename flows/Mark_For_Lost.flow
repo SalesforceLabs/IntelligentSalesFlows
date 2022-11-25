@@ -4,7 +4,7 @@
         <name>Get_Serialized_Products</name>
         <label>Get Serialized Products</label>
         <locationX>710</locationX>
-        <locationY>158</locationY>
+        <locationY>206</locationY>
         <actionName>CycleCountController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -41,7 +41,7 @@
         <name>Toast_Message</name>
         <label>Toast Message</label>
         <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationY>1166</locationY>
         <actionName>c:ShowToast</actionName>
         <actionType>component</actionType>
         <faultConnector>
@@ -51,13 +51,7 @@
         <inputParameters>
             <name>message</name>
             <value>
-                <stringValue>The selected Serial Numbers will be updated to status Mark as lost</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <stringValue>Action Complete</stringValue>
+                <stringValue>Products were marked as lost.</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -72,7 +66,7 @@
         <name>Update_Product_Loss</name>
         <label>Update Product Loss</label>
         <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationY>926</locationY>
         <actionName>HandOverController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -112,28 +106,6 @@
         </outputParameters>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
-    <decisions>
-        <name>Continue_Terminate</name>
-        <label>Continue/Terminate</label>
-        <locationX>710</locationX>
-        <locationY>518</locationY>
-        <defaultConnectorLabel>Terminate</defaultConnectorLabel>
-        <rules>
-            <name>Continue</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Cancel</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Product_Loss_Details</targetReference>
-            </connector>
-            <label>Continue</label>
-        </rules>
-    </decisions>
     <dynamicChoiceSets>
         <name>CollectionSetSerializedProducts</name>
         <collectionReference>serializedProducts</collectionReference>
@@ -153,7 +125,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -167,7 +139,7 @@
         <name>Create_Lost_Products</name>
         <label>Create Lost Products</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>806</locationY>
         <connector>
             <targetReference>Update_Product_Loss</targetReference>
         </connector>
@@ -180,7 +152,7 @@
         <name>Get_Product_Names</name>
         <label>Get Product Names</label>
         <locationX>710</locationX>
-        <locationY>278</locationY>
+        <locationY>326</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Serial_Number_Display</targetReference>
@@ -201,7 +173,7 @@
         <name>Update_Serialized_Products</name>
         <label>Update Serialized Products</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1046</locationY>
         <connector>
             <targetReference>Toast_Message</targetReference>
         </connector>
@@ -214,7 +186,7 @@
         <name>Error_Screen</name>
         <label>Error Screen</label>
         <locationX>314</locationX>
-        <locationY>1238</locationY>
+        <locationY>1286</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -230,7 +202,7 @@
         <name>Product_Loss_Details</name>
         <label>Product Loss Details</label>
         <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationY>686</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -244,7 +216,7 @@
             <inputParameters>
                 <name>popupBodyAssign</name>
                 <value>
-                    <stringValue>Are you sure you want to mark these as Lost? Marking the selected S.NOs as lost will also update your inventory details</stringValue>
+                    <stringValue>The product statuses and quantities are updated if you proceed.</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -294,13 +266,13 @@
     <screens>
         <name>Serial_Number_Display</name>
         <label>Serial Number Display</label>
-        <locationX>710</locationX>
-        <locationY>398</locationY>
+        <locationX>537</locationX>
+        <locationY>526</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Continue_Terminate</targetReference>
+            <targetReference>Product_Loss_Details</targetReference>
         </connector>
         <fields>
             <name>markSerialNumbers</name>
@@ -350,7 +322,7 @@
     </screens>
     <start>
         <locationX>584</locationX>
-        <locationY>0</locationY>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Get_Serialized_Products</targetReference>
         </connector>

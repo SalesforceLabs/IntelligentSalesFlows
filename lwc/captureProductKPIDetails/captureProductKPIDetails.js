@@ -1,6 +1,7 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import { FlowNavigationNextEvent, FlowNavigationBackEvent } from 'lightning/flowSupport';
 import getSerilizedProducts from '@salesforce/apex/MedicalDeviceReturnController.fetchSerilizedProductsforReturn';
+import getSerializedProductsInTheCase from '@salesforce/apex/MedicalDeviceReturnController.getSerializedProductsInTheCase';
 import getKPIQueries from '@salesforce/apex/MedicalDeviceReturnController.getKPIQueries';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { NavigationMixin } from 'lightning/navigation';
@@ -20,6 +21,7 @@ import PRODUCT_FIELD from '@salesforce/schema/Case.Product.Name';
 import FROMDATE_FIELD from '@salesforce/schema/Case.From_Date__c';
 import TODATE_FIELD from '@salesforce/schema/Case.To_Date__c';
 import RETURN_QUANTITY from '@salesforce/schema/Case.Quantity_Returned__c';
+import PARENT_CASE_ID from '@salesforce/schema/Case.ParentId';
 
 export default class CaptureProductKPIDetails extends NavigationMixin(LightningElement) {
     @api caseId;
@@ -52,6 +54,7 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
     @track rows = [];
     @track itemList = [];
     @track allSerlializedProducts =[];
+    @track serializedProductsToBeReturned =[];
     @track isNextDisabled= true;
 
 
@@ -85,6 +88,7 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
             this.caseDetail['Date'] = requestedDate?.toLocaleDateString();
             this.caseDetail['StartDate'] = StartDate?.toLocaleDateString();
             this.caseDetail['EndDate'] = EndDate?.toLocaleDateString();
+            this.caseDetail['ParentId'] = getFieldValue(data, PARENT_CASE_ID);
             let quantHandedover = getFieldValue(data, QTY_HANDEDOVER);
             this.quantityHandedOver = quantHandedover==null?0:quantHandedover;
             let returnQuantityOnCase = getFieldValue(data, RETURN_QUANTITY);
@@ -99,8 +103,18 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
     @wire(getSerilizedProducts, { productId: '$caseDetail.ProductId' })
     wiredSerilizedProducts({ data, error }) {
         if (data) {
-            console.log(data)
             this.allSerlializedProducts = data;
+            this.error = undefined;
+        } else if (error) {
+            this.error = error;
+            console.error(error);
+        }
+    }
+
+    @wire(getSerializedProductsInTheCase, { caseId: '$caseDetail.ParentId', productId: '$caseDetail.ProductId' })
+    wiredGenericCaseKpi({ data, error }) {
+        if (data) {
+            this.serializedProductsToBeReturned = data;
             this.error = undefined;
         } else if (error) {
             this.error = error;
@@ -174,7 +188,6 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
             this.showButton = false;
         }
         let newRecords = [];
-        console.log('newRows-->'+JSON.stringify(this.newrows));
         newRecords = this.newrows.map(row => {
             return {
                 SerialNumber__c: '',
@@ -209,9 +222,9 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
         let index = event.target.dataset.index;
         let enteredValue = this.template.querySelector("[data-target-id='" + index + "']");
         let enteredSerialNumber = enteredValue.value;
-         if (enteredSerialNumber && this.allSerlializedProducts.length == 0)
+         if (enteredSerialNumber && this.serializedProductsToBeReturned.length == 0)
             enteredValue.setCustomValidity('No Serialized Products found for the selected Product.');
-        else if (enteredSerialNumber && !this.allSerlializedProducts.includes(enteredSerialNumber))
+        else if (enteredSerialNumber && !this.serializedProductsToBeReturned.includes(enteredSerialNumber))
             enteredValue.setCustomValidity('Enter a valid serial number.');
         else if (enteredSerialNumber && this.itemList.length > 1 && this.itemList.find(e => e.serialNumber == enteredSerialNumber))
             enteredValue.setCustomValidity('Duplicate Serial Number Entered');
@@ -220,7 +233,9 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
 
         enteredValue.reportValidity();
 
-        this.itemList[event.target.dataset.index].serialNumber = enteredSerialNumber;
+        if(this.serializedProductsToBeReturned.includes(enteredSerialNumber)){
+            this.itemList[event.target.dataset.index].serialNumber = enteredSerialNumber;
+        }
          let rowsize = this.newrows.length;
          for(let i=0;i<rowsize;i++){
             this.itemList[event.target.dataset.index].kPIQueries[i].SerialNumber__c = enteredSerialNumber;
@@ -236,9 +251,7 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
 
     handleChildSelected(event) {
         let index = event.target.dataset.index;
-        console.log(index);
         let rowindex = event.target.dataset.childindex;
-        console.log(rowindex);
         if(this.itemList[index].kPIQueries[rowindex].DataType__c == 'Checkbox'){
             this.itemList[index].kPIQueries[rowindex].ActualBooleanValue__c = event.target.checked;
             this.itemList[index].kPIQueries[rowindex].ActualBooleanValue = event.target.checked ? 'True':'False';
@@ -279,8 +292,6 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
     handleUrl(event) {
         const recordId = event.target.dataset.id;
         const objectApiName = event.target.dataset.name;
-        console.log(recordId);
-        console.log(objectApiName);
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {

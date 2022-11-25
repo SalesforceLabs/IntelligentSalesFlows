@@ -4,7 +4,7 @@
         <name>Get_Serial_Numbers</name>
         <label>Get Serial Numbers</label>
         <locationX>1194</locationX>
-        <locationY>158</locationY>
+        <locationY>206</locationY>
         <actionName>CycleCountController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -41,7 +41,7 @@
         <name>Get_Serialized_Products</name>
         <label>Get Serialized Products</label>
         <locationX>314</locationX>
-        <locationY>2186</locationY>
+        <locationY>2234</locationY>
         <actionName>HandOverController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -84,7 +84,7 @@
         <name>Show_Toast</name>
         <label>Show Toast</label>
         <locationX>314</locationX>
-        <locationY>2426</locationY>
+        <locationY>2474</locationY>
         <actionName>c:ShowToast</actionName>
         <actionType>component</actionType>
         <faultConnector>
@@ -94,7 +94,7 @@
         <inputParameters>
             <name>message</name>
             <value>
-                <stringValue>The selected Serial Numbers will be updated to status Consumed</stringValue>
+                <stringValue>Product was related to an order.</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -110,7 +110,7 @@
         <name>Assgin_OrderItem_To_List</name>
         <label>Assgin OrderItem To List</label>
         <locationX>402</locationX>
-        <locationY>1490</locationY>
+        <locationY>1538</locationY>
         <assignmentItems>
             <assignToReference>ListOrderItem</assignToReference>
             <operator>Add</operator>
@@ -126,7 +126,7 @@
         <name>Assign_Asset</name>
         <label>Assign Asset</label>
         <locationX>402</locationX>
-        <locationY>1610</locationY>
+        <locationY>1658</locationY>
         <assignmentItems>
             <assignToReference>Asset.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -152,7 +152,7 @@
             <assignToReference>Asset.Uuid</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>VisitId</elementReference>
+                <elementReference>isVisitSelected</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -184,7 +184,7 @@
         <name>Assign_Asset_to_List</name>
         <label>Assign Asset to List</label>
         <locationX>402</locationX>
-        <locationY>1730</locationY>
+        <locationY>1778</locationY>
         <assignmentItems>
             <assignToReference>ListAsset</assignToReference>
             <operator>Add</operator>
@@ -200,7 +200,7 @@
         <name>Assign_OrderItem</name>
         <label>Assign OrderItem</label>
         <locationX>402</locationX>
-        <locationY>1370</locationY>
+        <locationY>1418</locationY>
         <assignmentItems>
             <assignToReference>OrderProduct.OrderId</assignToReference>
             <operator>Assign</operator>
@@ -241,32 +241,10 @@
         </connector>
     </assignments>
     <decisions>
-        <name>Continue_Terminate</name>
-        <label>Continue/Terminate</label>
-        <locationX>1194</locationX>
-        <locationY>398</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Continue</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>TerminateFlow</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Order_Details</targetReference>
-            </connector>
-            <label>Continue</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Create_New_Order</name>
         <label>Create New Order?</label>
         <locationX>314</locationX>
-        <locationY>878</locationY>
+        <locationY>926</locationY>
         <defaultConnector>
             <targetReference>Iterative_over_Selected_Serial_Numbers</targetReference>
         </defaultConnector>
@@ -293,7 +271,7 @@
         <name>Iterative_over_Selected_Serial_Numbers</name>
         <label>Iterative over Selected Serial Numbers</label>
         <locationX>314</locationX>
-        <locationY>1250</locationY>
+        <locationY>1298</locationY>
         <collectionReference>SelectedSerialNumbers</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -312,7 +290,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -326,7 +304,7 @@
         <name>Create_Assets</name>
         <label>Create Assets</label>
         <locationX>314</locationX>
-        <locationY>2066</locationY>
+        <locationY>2114</locationY>
         <connector>
             <targetReference>Get_Serialized_Products</targetReference>
         </connector>
@@ -339,7 +317,7 @@
         <name>Create_Order</name>
         <label>Create Order</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1046</locationY>
         <assignRecordIdToReference>OrderId</assignRecordIdToReference>
         <connector>
             <targetReference>Iterative_over_Selected_Serial_Numbers</targetReference>
@@ -389,7 +367,7 @@
         <name>Create_OrderItems</name>
         <label>Create OrderItems</label>
         <locationX>314</locationX>
-        <locationY>1946</locationY>
+        <locationY>1994</locationY>
         <connector>
             <targetReference>Create_Assets</targetReference>
         </connector>
@@ -402,7 +380,7 @@
         <name>Get_PriceBookEntry</name>
         <label>Get PriceBookEntry</label>
         <locationX>314</locationX>
-        <locationY>758</locationY>
+        <locationY>806</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_New_Order</targetReference>
@@ -430,7 +408,7 @@
         <name>Update_Serialized_Products</name>
         <label>Update Serialized Products</label>
         <locationX>314</locationX>
-        <locationY>2306</locationY>
+        <locationY>2354</locationY>
         <connector>
             <targetReference>Show_Toast</targetReference>
         </connector>
@@ -443,12 +421,12 @@
         <name>Display_Serial_Numbers</name>
         <label>Display Serial Numbers</label>
         <locationX>1194</locationX>
-        <locationY>278</locationY>
+        <locationY>326</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Continue_Terminate</targetReference>
+            <targetReference>Order_Details</targetReference>
         </connector>
         <fields>
             <name>markSerialNumbers</name>
@@ -457,7 +435,7 @@
             <inputParameters>
                 <name>title</name>
                 <value>
-                    <stringValue>Mark Product for Order</stringValue>
+                    <stringValue>Relate to Order</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -500,7 +478,7 @@
         <name>Error_Message</name>
         <label>Error Message</label>
         <locationX>1018</locationX>
-        <locationY>2426</locationY>
+        <locationY>2474</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -516,7 +494,7 @@
         <name>Order_Details</name>
         <label>Order Details</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -595,13 +573,13 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>VisitDetails</name>
         <label>Visit Details</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>686</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -633,13 +611,13 @@
             <inputParameters>
                 <name>popupHeader</name>
                 <value>
-                    <stringValue>Confirm Order</stringValue>
+                    <stringValue>Relate to Order?</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>popupMessage</name>
                 <value>
-                    <stringValue>Are you sure you want to update order for the selected S.NO?</stringValue>
+                    <stringValue>The product status and quantity are updated if you proceed.</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -650,11 +628,11 @@
             </outputParameters>
         </fields>
         <showFooter>false</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>1068</locationX>
-        <locationY>0</locationY>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Get_Serial_Numbers</targetReference>
         </connector>
