@@ -5,6 +5,10 @@
         <members>HandOverController</members>
         <members>HandoverSerilizedProductCase</members>
         <members>MarkAsReturnController</members>
+        <members>MedicalDeviceReturnController</members>
+        <members>CycleCountControllerTest</members>
+        <members>HandOverControllerTest</members>
+        <members>MedicalDeviceRequestController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -105,6 +109,8 @@
         <members>requestedListViewsCmp</members>
         <members>returnsListViewCmp</members>
         <members>moreActions</members>
+        <members>customLookupSearchChildCmp</members>
+        <members>patientRegistration</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
