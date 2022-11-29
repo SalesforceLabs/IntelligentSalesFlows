@@ -132,5 +132,9 @@
 		<members>Trial_Request</members>
 		<name>FlexiPage</name>
 	</types>
+    <types>
+        <members>Admin</members>
+        <name>Profile</name>
+    </types>
     <version>54.0</version>
 </Package>
