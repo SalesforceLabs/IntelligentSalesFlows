@@ -56,8 +56,10 @@ export default class MarkAsReturn extends NavigationMixin(LightningElement) {
     error;
     caseDetail;
     caseRecord;
+    serialNumbers = [];
 
-    @wire(getRecord, { recordId: '$caseId', layoutTypes: ['Full'], modes: ['View'] })
+    @wire(getRecord, { recordId: '$caseId', fields: [PRODUCT_ID, PRODUCT_NAME, ACCOUNT_FIELD, CONTACT_FIELD, QTY_FIELD, QTY_HANDEDOVER, RETURN_QUANTITY, LOCATION_FIELD,
+        PRODUCT_FIELD, ACCOUNT_ID, CONTACT_ID, LOCATION_ID, DATE_FIELD, FROMDATE_FIELD, TODATE_FIELD, ] })
     wireCase({ data, error }) {
         if (data) {
             this.isLoaded = true;
@@ -92,7 +94,6 @@ export default class MarkAsReturn extends NavigationMixin(LightningElement) {
             let returnQuantityOnCase = getFieldValue(data, RETURN_QUANTITY);
             this.returnQuantityOnCase = returnQuantityOnCase==null?0:returnQuantityOnCase;
             this.remainingReturnQuantity = quantHandedover-returnQuantityOnCase;
-            //alert(this.returnQuantityOnCase);
             this.todaysDate();
             this.allProductsQuantity = quantity;
             if (quantity) {
@@ -119,6 +120,7 @@ export default class MarkAsReturn extends NavigationMixin(LightningElement) {
             }
             this.error = undefined;
         } else if (error) {
+            this.options = [];
             this.options.push({ label: '--None--', value: '' });
             this.error = error;
             this.options = undefined;

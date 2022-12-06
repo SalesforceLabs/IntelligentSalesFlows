@@ -93,6 +93,7 @@
         <members>Show_More_Actions</members>
         <members>Mark_Product_for_Order</members>
         <members>Mark_For_Lost</members>
+        <members>Trial_Return</members>
         <name>Flow</name>
     </types>
     <types>

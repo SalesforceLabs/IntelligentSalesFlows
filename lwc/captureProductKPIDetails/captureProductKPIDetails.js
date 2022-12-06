@@ -64,7 +64,8 @@ export default class CaptureProductKPIDetails extends NavigationMixin(LightningE
     caseRecord;
 
 
-    @wire(getRecord, { recordId: '$caseId', layoutTypes: ['Full'], modes: ['View'] })
+    @wire(getRecord, { recordId: '$caseId', fields: [PRODUCT_ID, PRODUCT_NAME, ACCOUNT_FIELD, CONTACT_FIELD, QTY_FIELD, QTY_HANDEDOVER,
+        LOCATION_FIELD, PRODUCT_FIELD, ACCOUNT_ID, CONTACT_ID, LOCATION_ID, DATE_FIELD, FROMDATE_FIELD, TODATE_FIELD, PARENT_CASE_ID, RETURN_QUANTITY] })
     wireCase({ data, error }) {
         if (data) {
             this.isLoaded = true;

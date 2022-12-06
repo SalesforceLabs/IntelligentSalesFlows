@@ -34,9 +34,14 @@ public with sharing class MedicalDeviceRequestController {
 	related to the account
     */    
     @AuraEnabled(cacheable=true)
-    public static List<String> fetchSerilizedProductsforHandover(String productId){
+    public static List<String> fetchSerilizedProductsforHandover(String productId, String locationId){
         List<string> allSerilizedProductsList = new List<String>();
-        for(SerializedProduct sp: [SELECT Id, ProductItemId, Product2Id, Status,SerialNumber   FROM SerializedProduct WHERE Status='Available' AND ProductItemId !=null AND Product2Id =: productId]){
+        if (locationId == null || locationId == '' ) return allSerilizedProductsList;
+        List<string> piList = new List<String>();
+        for(ProductItem pi: [SELECT Id FROM ProductItem WHERE Product2Id =: productId AND LocationId =: locationId]){
+            piList.add(pi.Id);
+        }
+        for(SerializedProduct sp: [SELECT Id, ProductItemId, Product2Id, Status,SerialNumber   FROM SerializedProduct WHERE Status='Available' AND ProductItemId IN :piList AND Product2Id =: productId]){
             allSerilizedProductsList.add(sp.SerialNumber);
         }
         return allSerilizedProductsList;

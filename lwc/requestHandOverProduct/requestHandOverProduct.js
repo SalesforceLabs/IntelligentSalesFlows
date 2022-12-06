@@ -108,6 +108,13 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
     wiredSerilizedProducts({ data, error }) {
         if (data) {
             this.allSerlializedProducts = data;
+            let quantity = this.caseDetail.Quantity;
+            this.rows = [];
+            if (quantity && this.serialNumbers.length == 0) {
+                for (let i = 1; i <= quantity; i++) {
+                    this.rows.push({ serialNumber: '' });
+                }
+            }
             this.error = undefined;
         } else if (error) {
             this.error = error;
@@ -133,6 +140,8 @@ export default class RequestHandOverProduct extends NavigationMixin(LightningEle
         enteredValue.reportValidity();
         if(this.allSerlializedProducts.includes(enteredSerialNumber)){
             this.rows[index].serialNumber = enteredSerialNumber;
+        } else {
+            this.rows[index].serialNumber = "";
         }
     }
 
